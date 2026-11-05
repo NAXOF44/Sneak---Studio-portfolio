@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/proyectos.css">
+  <link rel="stylesheet" href="/css/reglas.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/Biblioteca.css">
+  <link rel="stylesheet" href="/css/footer.css">
+  <link rel="stylesheet" href="/css/Bar-player.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/x-icon" href="/favicon_io/favsk (6).svg">
+  <title>Sneak- studio Proyectos</title>
+</head>
+
+<body>
+
+  <section id="app" class="home-section">
+    <div class="contenido">
+      <div class="estadis-bib">
+        <div class="Proyec-bib">
+          <div class="creaciones-bib">
+            <p>Creaciones</p>
+          </div>
+          <div class="canti-proyect" id="canti-proyect"><h1 id="stat-creaciones">0</h1></div></div>
+
+        <div class="Proyec-bi">
+          <div class="creaciones-bib">
+            <p>Seguidores</p>
+          </div>
+          <div class="canti-proyect" id="canti-proyect">
+            <h1 id="stat-seguidores">0</h1></div></div>
+
+        <div class="Proyec-bi">
+          <div class="creaciones-bib">
+            <p>Me gusta
+            </p>
+          </div>
+          <div class="canti-proyect" id="canti-proyect">
+            <h1 id="stat-likes">0</h1></div></div>
+
+        <div class="Proyec-bi">
+          <div class="creaciones-bib">
+            <p>Vistas</p>
+          </div>
+          <div class="canti-proyect" id="canti-proyect">
+            <h1 id="stat-vistas">0</h1></div></div>
+      </div>
+      <div class="likes-music" onclick="window.location.href='/favoritas'" style="cursor:pointer;transition:opacity .2s" onmouseenter="this.style.opacity='.85'" onmouseleave="this.style.opacity='1'">
+        <div class="img-likes">
+          <img src="/img/img-fav-bib.jpeg" alt="">
+        </div>
+        <div class="list-text">
+          <div class="info-text-likes">
+            <h1>Canciones que te gustan</h1>
+          </div>
+          <div class="expli-lis">
+            <p>Todas las canciones que has marcado como favoritas. <br>
+              Accede rápidamente a tu selección personal sin necesidad de buscarlas nuevamente.</p>
+          </div>
+          <div class="porfile-list">
+            <div class="img-perfil-list"><a href=""><img src="/img/porfile.jpeg" alt="" id="bib-foto-usuario"></a>
+            </div>
+            <div class="list-name-and-list">
+              <div class="name"><a href=""><p id="bib-nombre-usuario">Usuario</p>
+                </a>
+              </div>
+              <div class="punto">
+                <p>.</p>
+              </div>
+              <div class="lista">
+                <p>Lista</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bibli-favo">
+        <div class="tit-favo">
+          <h1>Listas</h1>
+        </div>
+        <div class="most-mas">
+          <a href="">
+            <p>Ver mas</p>
+          </a>
+        </div>
+      </div>
+
+      <div class="listas-biblioteca" id="bib-listas">
+        <p style="color:#555;font-size:13px;padding:16px">Cargando...</p>
+      </div>
+
+      <div class="bibli-favo">
+        <div class="tit-favo">
+          <h1>Artistas</h1>
+        </div>
+        <div class="most-mas">
+          <a href="">
+            <p>Ver mas</p>
+          </a>
+        </div>
+      </div>
+
+      <div class="listas-artist" id="bib-artistas">
+        <p style="color:#555;font-size:13px;padding:16px">Cargando...</p>
+      </div>
+
+      <div class="bibli-favo">
+        <div class="tit-favo">
+          <h1>Albumes</h1>
+        </div>
+        <div class="most-mas">
+          <a href="">
+            <p>Ver mas</p>
+          </a>
+        </div>
+      </div>
+
+      <div class="list-album" id="bib-albums"><p style="color:#555;font-size:13px;padding:16px">Cargando...</p></div>
+
+      <div class="bibli-favo-sensillos">
+        <div class="tit-favo-sensillos">
+          <h1>Sensillos Populares</h1>
+        </div>
+        <div class="most-mas-sensillos">
+          <a href="">
+            <p>Ver mas</p>
+          </a>
+        </div>
+      </div>
+
+      <div class="list-sensillo44" id="bib-sencillos-1"></div>
+
+      <div class="list-sensillo44" id="bib-sencillos-2"></div>
+
+      <div class="bibli-favo-sensillos">
+        <div class="tit-favo-sensillos">
+          <h1>Top #3 para hoy</h1>
+        </div>
+        <div class="most-mas-sensillos">
+          <a href="">
+            <p>Ver mas</p>
+          </a>
+        </div>
+      </div>
+
+      <div class="top3-day" id="bib-top3"><p style="color:#555;font-size:13px;padding:16px">Cargando...</p></div>
+
+      <div class="explorar-btn">
+        <a href="/explorar"><button>Explorar mas</button></a>
+      </div>
+
+      <footer>
+        <div class="contenni-footer">
+          <div class="prin-footer">
+            <p>Use cases</p>
+            <p>Resources</p>
+            <p class="exp-foot">Explore</p>
+
+            <div class="icons">
+              <a href="https://www.instagram.com/"><i class="fa-brands fa-instagram"></i></a>
+              <a href=""> <i class="fa-brands fa-square-x-twitter"></i></a>
+              <a href=""><i class="fa-brands fa-facebook"></i></a>
+            </div>
+          </div>
+
+          <div class="opcion-footer">
+            <div class="foot-1">
+              <p>UI design</p>
+              <p>UX design</p>
+              <p>Wireframing</p>
+              <p>Diagramming</p>
+              <p>Brainstorming</p>
+              <p>Online whiteboard</p>
+              <p>Team collaboration</p>
+            </div>
+
+            <div class="foot-2">
+              <p>Design</p>
+              <p>Prototyping</p>
+              <p>Development features</p>
+              <p>Design systems</p>
+              <p>Collaboration features</p>
+              <p>Design process</p>
+              <p>FigJam</p>
+            </div>
+            <div class="foot-3">
+              <p>Blog</p>
+              <p>Best practices</p>
+              <p>Colors</p>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="derechos-footer">
+          <a href="">
+            <p>Política de privacidad</p>
+          </a>
+          <a href="">
+            <p>Política de Cookies</p>
+          </a>
+          <a href="">
+            <p>Aviso Legal</p>
+          </a>
+          <a href="">
+            <p>Condiciones de Uso</p>
+          </a>
+          <a href="">
+            <p>Seguridad y privacidad</p>
+          </a>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="/js/emailjs-config.js"></script>
+  <script src="/js/denuncia.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/player-global.js"></script>
+  <script type="module" src="/js/auth-guard.js"></script>
+  <script type="module" src="/js/biblioteca-dinamico.js"></script>
+  <script src="/js/scroll-buttons.js"></script>
+</body>
+
+</html>

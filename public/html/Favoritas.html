@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <link rel="stylesheet" href="/css/proyectos.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/reglas.css">
+    <link rel="stylesheet" href="/css/Biblioteca.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/Bar-player.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="/favicon_io/favsk (6).svg">
+    <title>Canciones que te gustan — Sneak Studio</title>
+    <style>
+        .fav-header {
+            display: flex;
+            align-items: flex-end;
+            gap: 32px;
+            padding: 48px 40px 32px;
+            background: linear-gradient(to bottom, #1a0a0a, #080808);
+        }
+
+        .fav-cover {
+            width: 200px;
+            height: 200px;
+            min-width: 200px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ff4466, #ff6200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 24px 60px rgba(255, 68, 102, .35);
+            flex-shrink: 0;
+        }
+
+        .fav-cover i {
+            font-size: 72px;
+            color: #fff;
+        }
+
+        .fav-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .fav-tipo {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .fav-titulo {
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            font-weight: 900;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+
+        .fav-meta {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .fav-meta span {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .btn-play-fav {
+            background: #FF6200;
+            color: #000;
+            border: none;
+            padding: 13px 36px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform .15s, background .2s;
+        }
+
+        .btn-play-fav:hover {
+            background: #ff7a20;
+            transform: scale(1.02);
+        }
+
+        /* Lista de canciones */
+        .fav-list {
+            padding: 24px 40px 120px;
+        }
+
+        .fav-list-header {
+            display: grid;
+            grid-template-columns: 40px 1fr 1fr 60px 40px;
+            padding: 8px 16px;
+            color: #555;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
+            margin-bottom: 8px;
+        }
+
+        .fav-row {
+            display: grid;
+            grid-template-columns: 40px 1fr 1fr 60px 40px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            align-items: center;
+            cursor: pointer;
+            transition: background .15s;
+            gap: 8px;
+        }
+
+        .fav-row:hover {
+            background: rgba(255, 255, 255, .06);
+        }
+
+        .fav-row.playing {
+            background: rgba(255, 98, 0, .08);
+        }
+
+        .fav-num {
+            font-size: 13px;
+            color: #555;
+            text-align: center;
+        }
+
+        .fav-song {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .fav-song img {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            object-fit: cover;
+            background: #1a1a1a;
+            flex-shrink: 0;
+        }
+
+        .fav-song-info {
+            min-width: 0;
+        }
+
+        .fav-song-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .fav-row.playing .fav-song-title {
+            color: #FF6200;
+        }
+
+        .fav-song-artist {
+            font-size: 11px;
+            color: #666;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .fav-artista {
+            font-size: 12px;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .fav-dur {
+            font-size: 12px;
+            color: #555;
+            text-align: right;
+        }
+
+        .fav-like {
+            background: none;
+            border: none;
+            color: #ff4466;
+            cursor: pointer;
+            font-size: 15px;
+            padding: 4px;
+            transition: transform .15s;
+        }
+
+        .fav-like:hover {
+            transform: scale(1.2);
+        }
+
+        /* Loading / Empty */
+        .fav-loading {
+            text-align: center;
+            padding: 80px 20px;
+            color: #444;
+        }
+
+        .fav-loading .spinner {
+            width: 32px;
+            height: 32px;
+            border: 2px solid #222;
+            border-top-color: #FF6200;
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .fav-empty {
+            text-align: center;
+            padding: 80px 20px;
+            color: #444;
+        }
+
+        .fav-empty i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            display: block;
+            color: #2a2a2a;
+        }
+
+        .fav-empty p {
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .fav-empty a {
+            color: #FF6200;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .fav-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 32px 20px 24px;
+            }
+
+            .fav-cover {
+                width: 160px;
+                height: 160px;
+                min-width: 160px;
+            }
+
+            .fav-list {
+                padding: 16px 16px 120px;
+            }
+
+            .fav-list-header {
+                display: none;
+            }
+
+            .fav-row {
+                grid-template-columns: 1fr 60px 40px;
+            }
+
+            .fav-num {
+                display: none;
+            }
+
+            .fav-artista {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <section id="app" class="home-section">
+
+        <div class="fav-header">
+            <div class="fav-cover">
+                <i class="fas fa-heart"></i>
+            </div>
+            <div class="fav-info">
+                <p class="fav-tipo">Lista</p>
+                <h1 class="fav-titulo">Tus canciones favoritas</h1>
+                <p class="fav-meta" id="fav-meta">Cargando...</p>
+                <button class="btn-play-fav" onclick="reproducirTodo()">
+                    <i class="fas fa-play" id="fav-play-ico"></i> Reproducir todo
+                </button>
+            </div>
+        </div>
+
+        <div class="fav-list">
+            <div class="fav-list-header">
+                <span>#</span>
+                <span>Título</span>
+                <span>Artista</span>
+                <span style="text-align:right"><i class="far fa-clock"></i></span>
+                <span></span>
+            </div>
+            <div id="fav-container">
+                <div class="fav-loading">
+                    <div class="spinner"></div>
+                    <p>Cargando...</p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="/js/emailjs-config.js"></script>
+  <script src="/js/denuncia.js"></script>
+  <script src="/js/layout.js"></script>
+    <script src="/js/player-global.js"></script>
+    <script type="module" src="/js/auth-guard.js"></script>
+
+    <script type="module">
+        import { getMisLikes, leerCancion, toggleLike, getUID } from '/js/sneak-db.js';
+        import { getUsuarioLocal } from '/js/firebase-auth.js';
+
+        const $ = id => document.getElementById(id);
+        const PH = '/img/home-banner.png';
+
+        let _canciones = [];
+        let _playing = false;
+
+        function fmt(s) {
+            if (!s || isNaN(s)) return '—';
+            const m = Math.floor(s / 60), sec = Math.floor(s % 60);
+            return m + ':' + (sec < 10 ? '0' : '') + sec;
+        }
+
+        function esc(s) {
+            if (!s) return '';
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        async function init() {
+            const u = getUsuarioLocal();
+            if (!u?.uid) return;
+
+            try {
+                
+
+                const ids = await getMisLikes();
+
+                if (!ids.length) {
+                    $('fav-container').innerHTML = `
+          <div class="fav-empty">
+            <i class="far fa-heart"></i>
+            <p>Aún no tienes canciones favoritas.</p>
+            <a href="/inicio">← Descubre música</a>
+          </div>`;
+                    $('fav-meta').textContent = 'Tu lista está vacía';
+                    return;
+                }
+
+                
+
+                const results = await Promise.all(ids.map(id => leerCancion(id).catch(() => null)));
+                _canciones = results.filter(Boolean);
+
+                
+
+                const totalDur = _canciones.reduce((a, c) => a + (parseInt(c.duracion) || 0), 0);
+                const mins = Math.floor(totalDur / 60);
+                $('fav-meta').innerHTML = `<span>${_canciones.length} canciones</span>${mins ? ' · ' + mins + ' min' : ''}`;
+
+                
+
+                renderLista(-1);
+
+            } catch (e) {
+                console.error('[Favoritas]', e);
+                $('fav-container').innerHTML = `
+        <div class="fav-empty">
+          <i class="fas fa-exclamation-triangle"></i>
+          <p>Error al cargar tus favoritas.</p>
+          <a href="Biblioteca.html">← Volver</a>
+        </div>`;
+            }
+        }
+
+        function renderLista(activoIdx) {
+            if (!_canciones.length) return;
+
+            $('fav-container').innerHTML = _canciones.map((c, i) => `
+      <div class="fav-row ${i === activoIdx ? 'playing' : ''}" id="fav-row-${i}" onclick="playTrack(${i})">
+        <span class="fav-num">${i + 1}</span>
+        <div class="fav-song">
+          <img src="${c.portada || PH}" alt="" onerror="this.src='${PH}'">
+          <div class="fav-song-info">
+            <div class="fav-song-title">${esc(c.titulo)}</div>
+            <div class="fav-song-artist">${esc(c.artista)}</div>
+          </div>
+        </div>
+        <span class="fav-artista">${esc(c.artista)}</span>
+        <span class="fav-dur">${fmt(c.duracion)}</span>
+        <button class="fav-like" onclick="event.stopPropagation();quitarLike('${c.id}', ${i})" title="Quitar de favoritas">
+          <i class="fas fa-heart"></i>
+        </button>
+      </div>`).join('');
+        }
+
+        window.playTrack = function (idx) {
+            const c = _canciones[idx];
+            if (!c) return;
+            if (c.audio && typeof window.cargarCola === 'function') {
+                window.cargarCola(_canciones, idx);
+            } else {
+                window.location.href = `/cancion?id=${c.id}`;
+                return;
+            }
+            renderLista(idx);
+            _playing = true;
+            $('fav-play-ico').className = 'fas fa-pause';
+        };
+
+        window.reproducirTodo = function () {
+            if (!_canciones.length) return;
+            _playing = !_playing;
+            $('fav-play-ico').className = _playing ? 'fas fa-pause' : 'fas fa-play';
+            if (_playing && typeof window.cargarCola === 'function') {
+                window.cargarCola(_canciones, 0);
+                renderLista(0);
+            } else if (typeof window._togglePlayerPause === 'function') {
+                window._togglePlayerPause();
+            }
+        };
+
+        window.quitarLike = async function (cancionId, idx) {
+            try {
+                await toggleLike(cancionId);
+                
+
+                _canciones.splice(idx, 1);
+                if (!_canciones.length) {
+                    $('fav-container').innerHTML = `
+          <div class="fav-empty">
+            <i class="far fa-heart"></i>
+            <p>Ya no tienes canciones favoritas.</p>
+            <a href="/inicio">← Descubre música</a>
+          </div>`;
+                    $('fav-meta').textContent = 'Tu lista está vacía';
+                } else {
+                    renderLista(-1);
+                    $('fav-meta').innerHTML = `<span>${_canciones.length} canciones</span>`;
+                }
+            } catch (e) { console.error('[Favoritas] quitarLike:', e); }
+        };
+
+        
+
+        window._onSongChange = function (id) {
+            const idx = _canciones.findIndex(c => c.id === id);
+            if (idx >= 0) renderLista(idx);
+        };
+
+        init();
+    </script>
+
+  <script src="/js/scroll-buttons.js"></script>
+</body>
+
+</html>

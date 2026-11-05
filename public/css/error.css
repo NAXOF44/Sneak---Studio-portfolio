@@ -1,0 +1,212 @@
+.desktop {
+    width: 1440px;
+    height: 1024px;
+    display: flex;
+    flex-direction: column;
+    gap: 156px;
+    background-color: #f6f2ef;
+    border-radius: 42px;
+    overflow: hidden;
+}
+
+.desktop .nav {
+    margin-left: 274px;
+    width: 892px;
+    height: 40px;
+    position: relative;
+    margin-top: 57px;
+}
+
+.desktop .lista {
+    position: absolute;
+    top: 0;
+    left: 165px;
+    width: 455px;
+    height: 40px;
+}
+
+.desktop .rectangle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 99px;
+    height: 40px;
+    background-color: #bfbfbf66;
+    border-radius: 20px;
+}
+
+.desktop .text-wrapper {
+    position: absolute;
+    top: 8px;
+    left: 24px;
+    width: 53px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.desktop .div {
+    position: absolute;
+    top: 10px;
+    left: 123px;
+    width: 80px;
+    font-family: "Inter-Medium", Helvetica;
+    font-weight: 500;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.desktop .text-wrapper-2 {
+    position: absolute;
+    top: 10px;
+    left: 243px;
+    width: 66px;
+    font-family: "Inter-Medium", Helvetica;
+    font-weight: 500;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.desktop .text-wrapper-3 {
+    position: absolute;
+    top: 10px;
+    left: 358px;
+    width: 89px;
+    font-family: "Inter-Medium", Helvetica;
+    font-weight: 500;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.desktop .botnoes {
+    position: absolute;
+    top: 3px;
+    left: 661px;
+    width: 231px;
+    height: 34px;
+    display: flex;
+    gap: 20px;
+}
+
+.desktop .btn {
+    width: 114px;
+    background-color: #000000;
+    height: 34.09px;
+    position: relative;
+    border-radius: 8px;
+}
+
+.desktop .text-wrapper-4 {
+    position: absolute;
+    width: 79.82%;
+    height: 55.56%;
+    top: 19.29%;
+    left: 10.53%;
+    font-family: "Outfit-Regular", Helvetica;
+    font-weight: 400;
+    color: #ffffff;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.desktop .div-wrapper {
+    width: 97px;
+    border: 1px solid;
+    border-color: #0000004c;
+    height: 34.09px;
+    position: relative;
+    border-radius: 8px;
+}
+
+.desktop .text-wrapper-5 {
+    position: absolute;
+    width: 87.63%;
+    height: 55.56%;
+    top: 17.81%;
+    left: 8.25%;
+    font-family: "Outfit-Regular", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.desktop .logo {
+    position: absolute;
+    width: 7.64%;
+    height: 86.12%;
+    top: 7.50%;
+    left: 0;
+}
+
+.desktop .info {
+    margin-left: 300px;
+    width: 841px;
+    height: 609px;
+    position: relative;
+}
+
+.desktop .img {
+    position: absolute;
+    top: 83px;
+    left: 201px;
+    width: 474px;
+    height: 526px;
+    aspect-ratio: 0.9;
+    object-fit: cover;
+}
+
+.desktop .element {
+    position: absolute;
+    top: 0;
+    left: calc(50.00% - 420px);
+    font-family: "Inter-Bold", Helvetica;
+    font-weight: 700;
+    color: transparent;
+    font-size: 400px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 380.0px;
+    white-space: nowrap;
+}
+
+.desktop .span {
+    color: #000000;
+}
+
+.desktop .text-wrapper-6 {
+    color: #ff6100;
+}
+
+.desktop .text-wrapper-7 {
+    position: absolute;
+    top: -3px;
+    left: calc(50.00% - 404px);
+    -webkit-text-stroke: 3px #ffffff;
+    font-family: "Inter-Bold", Helvetica;
+    font-weight: 700;
+    color: transparent;
+    font-size: 400px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 380.0px;
+    white-space: nowrap;
+}
+

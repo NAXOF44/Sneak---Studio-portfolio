@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Sneak Studio — Tus proyectos musicales">
+  <title>Proyectos — Sneak Studio</title>
+
+  <link rel="stylesheet" href="/css/proyectos.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/Bar-player.css">
+  <link rel="stylesheet" href="/css/footer.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
+  
+  <link rel="icon" type="image/x-icon" href="/favicon_io/favsk (6).svg">
+</head>
+
+<body>
+
+  <div id="modal-crear-proyecto" class="modal">
+    <div class="modal-contenido">
+      <span class="cerrar-modal">&times;</span>
+      <h2>Nuevo proyecto</h2>
+      <p style="color:#666;font-size:13px;margin-bottom:0">Dale un nombre a tu proyecto</p>
+      <input type="text" id="nombre-proyecto-input" placeholder="Ej: Mi primer beat, EP Verano...">
+      <button id="guardar-proyecto-btn">Crear proyecto</button>
+    </div>
+  </div>
+
+  <div id="modal-editar-proyecto" class="modal">
+    <div class="modal-contenido">
+      <span class="cerrar-modal-editar">&times;</span>
+      <h2>Renombrar proyecto</h2>
+      <p style="color:#666;font-size:13px;margin-bottom:0">Escribe el nuevo nombre</p>
+      <input type="text" id="editar-nombre-proyecto-input" placeholder="Nuevo nombre...">
+      <button id="editar-proyecto-btn">Guardar cambios</button>
+    </div>
+  </div>
+
+  <div id="modal-confirmar-eliminar" class="modal">
+    <div class="modal-confirmacion">
+      <div class="modal-icon-danger">
+        <i class="fa-solid fa-trash"></i>
+      </div>
+      <h3>¿Eliminar proyecto?</h3>
+      <p id="proyecto-a-eliminar-nombre">Este proyecto se eliminará permanentemente</p>
+      <div class="modal-confirmacion-botones">
+        <button id="cancelar-eliminar-btn" class="btn-cancelar">Cancelar</button>
+        <button id="confirmar-eliminar-btn" class="btn-confirmar">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <section id="app" class="home-section">
+
+    <div class="busqueda">
+      <a href="/perfil" class="mobile-profile-btn">
+        <img src="/img/porfile.jpeg" alt="Perfil" id="mobile-foto">
+      </a>
+      <input placeholder="Buscar proyecto..." type="search" id="buscador-proyectos">
+      <div class="button1">
+        <button class="button" id="btn-nuevo-proyecto">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+          </svg>
+          Nuevo proyecto
+        </button>
+      </div>
+    </div>
+
+    <div id="proy-spinner" style="display:none">
+      <div class="spinner-ring"></div>
+      <span>Cargando proyectos...</span>
+    </div>
+
+    <div id="proyectos-container"></div>
+
+    <div class="zero-proyectos" id="zero-proyectos" style="display:none">
+      <div class="zero-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13s1.12-2 2.5-2 2.5.896 2.5 2m9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2"/>
+          <path fill-rule="evenodd" d="M14 11V2h1v9zM6 3v10H5V3z"/>
+          <path d="M5 2.905a1 1 0 0 1 .9-.995l8-.8a1 1 0 0 1 1.1.995V3L5 4z"/>
+        </svg>
+      </div>
+      <p id="zero-texto">Aún no tienes proyectos creados</p>
+      <button class="btn-crear-primero" id="btn-crear-primero">Crear mi primer proyecto</button>
+    </div>
+
+    <footer>
+      <div class="contenni-footer">
+        <div class="prin-footer">
+          <p>Sneak Studio</p>
+          <p>Explorar</p>
+          <div class="icons">
+            <a href="https://www.instagram.com/"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+          </div>
+        </div>
+        <div class="opcion-footer">
+          <div class="foot-1">
+            <p>Subir música</p>
+            <p>Explorar</p>
+            <p>Biblioteca</p>
+            <p>Perfil</p>
+          </div>
+          <div class="foot-2">
+            <p>Planes</p>
+            <p>Contacto</p>
+            <p>Ayuda</p>
+          </div>
+        </div>
+      </div>
+      <div class="derechos-footer">
+        <a href="#"><p>Política de privacidad</p></a>
+        <a href="#"><p>Política de Cookies</p></a>
+        <a href="#"><p>Aviso Legal</p></a>
+        <a href="#"><p>Condiciones de Uso</p></a>
+      </div>
+    </footer>
+
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="/js/emailjs-config.js"></script>
+  <script src="/js/denuncia.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/player-global.js"></script>
+  <script type="module" src="/js/auth-guard.js"></script>
+
+  <script type="module">
+    import { initializeApp, getApps }
+      from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+    import {
+      getFirestore,
+      collection, query, where, orderBy, getDocs,
+      addDoc, updateDoc, deleteDoc, doc, serverTimestamp
+    } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+    import { getUsuarioLocal } from '/js/firebase-auth.js';
+
+    const FIREBASE_CONFIG = {
+      apiKey:            'AIzaSyAreMBZ0Rm-5UIm9QmcZFPdSUqZeJRXWR4',
+      authDomain:        'sneak-studio-9546b.firebaseapp.com',
+      projectId:         'sneak-studio-9546b',
+      storageBucket:     'sneak-studio-9546b.firebasestorage.app',
+      messagingSenderId: '82447095158',
+      appId:             '1:82447095158:web:d4db0739bfefcd397fd657',
+    };
+
+    const app = getApps().length ? getApps()[0] : initializeApp(FIREBASE_CONFIG);
+    const db  = getFirestore(app);
+
+    const _u  = getUsuarioLocal();
+    const uid = _u?.uid || null;
+
+    const modal              = document.getElementById('modal-crear-proyecto');
+    const modalEditar        = document.getElementById('modal-editar-proyecto');
+    const modalEliminar      = document.getElementById('modal-confirmar-eliminar');
+    const inputNombre        = document.getElementById('nombre-proyecto-input');
+    const inputEditarNombre  = document.getElementById('editar-nombre-proyecto-input');
+    const btnGuardar         = document.getElementById('guardar-proyecto-btn');
+    const btnGuardarEditar   = document.getElementById('editar-proyecto-btn');
+    const btnCerrar          = document.querySelector('.cerrar-modal');
+    const btnCerrarEditar    = document.querySelector('.cerrar-modal-editar');
+    const btnCancelarElim    = document.getElementById('cancelar-eliminar-btn');
+    const btnConfirmarElim   = document.getElementById('confirmar-eliminar-btn');
+    const textoElim          = document.getElementById('proyecto-a-eliminar-nombre');
+    const container          = document.getElementById('proyectos-container');
+    const zeroEl             = document.getElementById('zero-proyectos');
+    const zeroTexto          = document.getElementById('zero-texto');
+    const spinner            = document.getElementById('proy-spinner');
+    const btnNuevo           = document.getElementById('btn-nuevo-proyecto');
+    const btnPrimero         = document.getElementById('btn-crear-primero');
+    const buscador           = document.getElementById('buscador-proyectos');
+
+    let _proyectos            = [];
+    let proyectoEnEdicion     = null;
+    let proyectoEnEliminacion = null;
+
+    async function fsCargar() {
+      if (!uid) return [];
+      try {
+        const q    = query(collection(db,'proyectos'), where('uid','==',uid), orderBy('creadoEn','desc'));
+        const snap = await getDocs(q);
+        return snap.docs.map(d => ({ firestoreId: d.id, ...d.data() }));
+      } catch {
+        try {
+          const q2    = query(collection(db,'proyectos'), where('uid','==',uid));
+          const snap2 = await getDocs(q2);
+          return snap2.docs.map(d => ({ firestoreId: d.id, ...d.data() }));
+        } catch(e) { console.error('[proyectos] cargar:', e); return []; }
+      }
+    }
+
+    async function fsCrear(nombre) {
+      if (!uid) throw new Error('Sin sesión');
+      const data = {
+        uid,
+        nombre:    nombre.trim(),
+        archivado: false,
+        creadoEn:  serverTimestamp(),
+        fecha:     new Date().toLocaleDateString('es-ES', { year:'numeric', month:'long', day:'numeric' }),
+      };
+      const ref = await addDoc(collection(db,'proyectos'), data);
+      return { firestoreId: ref.id, ...data };
+    }
+
+    async function fsActualizar(fid, cambios) {
+      await updateDoc(doc(db,'proyectos', fid), { ...cambios, actualizadoEn: serverTimestamp() });
+    }
+
+    async function fsBorrar(fid) {
+      await deleteDoc(doc(db,'proyectos', fid));
+    }
+
+    function toast(msg, tipo = 'ok') {
+      let t = document.querySelector('.proy-toast');
+      if (!t) {
+        t = document.createElement('div');
+        t.className = 'proy-toast';
+        document.body.appendChild(t);
+      }
+      t.textContent = msg;
+      t.className = 'proy-toast show ' + tipo;
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    function setSpinner(v) { spinner.style.display = v ? 'flex' : 'none'; }
+    function abrirModal(m)  { m.style.display = 'flex'; }
+    function cerrarModal(m) { m.style.display = 'none'; }
+
+    function crearTarjeta(p) {
+      const div = document.createElement('div');
+      div.className = 'tarjeta-proyecto';
+      div.dataset.id = p.firestoreId;
+
+      const archivarIcon   = p.archivado ? 'fa-rotate-left' : 'fa-box-archive';
+      const archivarTitle  = p.archivado ? 'Desarchivar' : 'Archivar';
+      const archivarAction = p.archivado ? 'desarchivar' : 'archivar';
+
+      div.innerHTML = `
+        <div class="tarjeta-header">
+          <div class="tarjeta-icono">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#FF6200" viewBox="0 0 16 16">
+              <path d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13s1.12-2 2.5-2 2.5.896 2.5 2m9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2"/>
+              <path fill-rule="evenodd" d="M14 11V2h1v9zM6 3v10H5V3z"/>
+              <path d="M5 2.905a1 1 0 0 1 .9-.995l8-.8a1 1 0 0 1 1.1.995V3L5 4z"/>
+            </svg>
+          </div>
+          <div class="tarjeta-acciones">
+            <button class="accion-btn" data-action="editar" title="Renombrar"><i class="fa-solid fa-pen"></i></button>
+            <button class="accion-btn" data-action="duplicar" title="Duplicar"><i class="fa-solid fa-copy"></i></button>
+            <button class="accion-btn" data-action="${archivarAction}" title="${archivarTitle}"><i class="fa-solid ${archivarIcon}"></i></button>
+            <button class="accion-btn eliminar-btn" data-action="eliminar" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </div>
+        <h3>${p.nombre}</h3>
+        <p>${p.fecha || '—'}</p>
+      `;
+
+      div.querySelectorAll('.accion-btn').forEach(btn => {
+        btn.addEventListener('click', async e => {
+          e.stopPropagation();
+          const pFresco = _proyectos.find(x => x.firestoreId === div.dataset.id);
+          if (!pFresco) return;
+          switch (btn.dataset.action) {
+            case 'editar':      abrirEdicion(pFresco);             break;
+            case 'eliminar':    abrirEliminar(pFresco);            break;
+            case 'archivar':    await toggleArchivar(pFresco, true);  break;
+            case 'desarchivar': await toggleArchivar(pFresco, false); break;
+            case 'duplicar':    await duplicar(pFresco);           break;
+          }
+        });
+      });
+
+      return div;
+    }
+
+    function renderizar(filtro = '') {
+      container.innerHTML = '';
+      let lista = [..._proyectos];
+
+      if (filtro.trim()) {
+        const q = filtro.trim().toLowerCase();
+        lista = lista.filter(p => p.nombre.toLowerCase().includes(q));
+      }
+
+      const activos    = lista.filter(p => !p.archivado);
+      const archivados = lista.filter(p =>  p.archivado);
+
+      if (!lista.length) {
+        zeroEl.style.display = 'flex';
+        zeroTexto.textContent = filtro.trim()
+          ? `No se encontró ningún proyecto con "${filtro.trim()}"`
+          : 'Aún no tienes proyectos creados';
+        return;
+      }
+      zeroEl.style.display = 'none';
+
+      if (activos.length) {
+        const grid = document.createElement('div');
+        grid.className = 'proyectos-grid';
+        activos.forEach(p => grid.appendChild(crearTarjeta(p)));
+        container.appendChild(grid);
+      }
+
+      if (archivados.length) {
+        const sec = document.createElement('div');
+        sec.className = 'seccion-archivados';
+        sec.innerHTML = `
+          <div class="archivados-titulo">
+            <i class="fa-solid fa-box-archive"></i>
+            Archivados <span>${archivados.length}</span>
+          </div>`;
+        const grid = document.createElement('div');
+        grid.className = 'proyectos-grid archivados-grid';
+        archivados.forEach(p => grid.appendChild(crearTarjeta(p)));
+        sec.appendChild(grid);
+        container.appendChild(sec);
+      }
+    }
+
+    async function recargar(filtro = '') {
+      setSpinner(true);
+      _proyectos = await fsCargar();
+      setSpinner(false);
+      renderizar(filtro);
+    }
+
+    function abrirEdicion(p) {
+      proyectoEnEdicion = p.firestoreId;
+      inputEditarNombre.value = p.nombre;
+      abrirModal(modalEditar);
+      inputEditarNombre.focus();
+    }
+
+    function abrirEliminar(p) {
+      proyectoEnEliminacion = p.firestoreId;
+      textoElim.textContent = `Se eliminará "${p.nombre}" de forma permanente.`;
+      abrirModal(modalEliminar);
+    }
+
+    async function toggleArchivar(p, archivar) {
+      try {
+        await fsActualizar(p.firestoreId, { archivado: archivar });
+        toast(archivar ? `"${p.nombre}" archivado` : `"${p.nombre}" desarchivado`);
+      } catch { toast('Error al archivar', 'error'); }
+      await recargar(buscador.value);
+    }
+
+    async function duplicar(p) {
+      try {
+        const nuevo = await fsCrear(`${p.nombre} (copia)`);
+        toast(`Duplicado: "${nuevo.nombre}"`);
+      } catch { toast('Error al duplicar', 'error'); }
+      await recargar(buscador.value);
+    }
+
+    async function crearProyecto(nombre) {
+      if (!nombre.trim()) { toast('El nombre no puede estar vacío', 'error'); return false; }
+      try {
+        const nuevo = await fsCrear(nombre);
+        toast(`¡"${nuevo.nombre}" creado!`);
+        await recargar();
+        return true;
+      } catch(e) {
+        console.error('[proyectos] crear:', e);
+        toast('Error al crear el proyecto', 'error');
+        return false;
+      }
+    }
+
+    async function guardarEdicion() {
+      if (!proyectoEnEdicion) return;
+      const nombre = inputEditarNombre.value.trim();
+      if (!nombre) { toast('El nombre no puede estar vacío', 'error'); return; }
+      try {
+        await fsActualizar(proyectoEnEdicion, { nombre });
+        toast(`Renombrado a "${nombre}"`);
+        cerrarModal(modalEditar);
+        proyectoEnEdicion = null;
+        await recargar(buscador.value);
+      } catch { toast('Error al guardar', 'error'); }
+    }
+
+    async function eliminar() {
+      if (!proyectoEnEliminacion) return;
+      const p = _proyectos.find(x => x.firestoreId === proyectoEnEliminacion);
+      try {
+        await fsBorrar(proyectoEnEliminacion);
+        toast(`"${p?.nombre || 'Proyecto'}" eliminado`);
+        cerrarModal(modalEliminar);
+        proyectoEnEliminacion = null;
+        await recargar(buscador.value);
+      } catch { toast('Error al eliminar', 'error'); }
+    }
+
+    btnNuevo?.addEventListener('click', () => { inputNombre.value = ''; abrirModal(modal); inputNombre.focus(); });
+    btnPrimero?.addEventListener('click', () => { inputNombre.value = ''; abrirModal(modal); inputNombre.focus(); });
+    btnCerrar?.addEventListener('click', () => cerrarModal(modal));
+    btnCerrarEditar?.addEventListener('click', () => { cerrarModal(modalEditar); proyectoEnEdicion = null; });
+    btnCancelarElim?.addEventListener('click', () => { cerrarModal(modalEliminar); proyectoEnEliminacion = null; });
+    btnGuardar?.addEventListener('click', async () => { if (await crearProyecto(inputNombre.value)) cerrarModal(modal); });
+    btnGuardarEditar?.addEventListener('click', guardarEdicion);
+    btnConfirmarElim?.addEventListener('click', eliminar);
+    inputNombre?.addEventListener('keydown', e => { if (e.key === 'Enter') btnGuardar.click(); });
+    inputEditarNombre?.addEventListener('keydown', e => { if (e.key === 'Enter') guardarEdicion(); });
+    window.addEventListener('click', e => {
+      if (e.target === modal)         cerrarModal(modal);
+      if (e.target === modalEditar)   { cerrarModal(modalEditar);   proyectoEnEdicion = null; }
+      if (e.target === modalEliminar) { cerrarModal(modalEliminar); proyectoEnEliminacion = null; }
+    });
+    buscador?.addEventListener('input', () => renderizar(buscador.value));
+
+    await recargar();
+  </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+.video-explo.playing .icon-play, 
+.video2.playing .icon-play, 
+.video3.playing .icon-play {
+    opacity: 0;
+    pointer-events: none;  
+    transition: opacity 0.2s ease;
+}
+
+.video-explo .icon-play svg {
+
+    width: 80px;
+    height: 90px;
+    position: relative;
+    top: -395px;
+    left: 135px;
+}
+
+.video-explo video {
+    width: 250px;
+    height: 500px;
+    border: solid 1px #6b6b6b3a;
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+.video-explo p {
+    color: rgb(255, 255, 255);
+    font-weight: 300;
+    opacity: 50%;
+    position: relative;
+    top: -27px;
+}
+
+.video-explo h4 {
+    position: relative;
+    top: -0.5vw;
+}

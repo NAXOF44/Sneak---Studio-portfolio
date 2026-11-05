@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/Bar-player.css">
+  <link rel="icon" type="image/x-icon" href="/favicon_io/favsk (6).svg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Radio — Sneak Studio</title>
+  <script src="/js/player-global.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #080808; --bg2: #111; --border: rgba(255,255,255,.08); --muted: #555; --muted2: #888; --accent: #FF6200; }
+    body { background: var(--bg); color: #fff; font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+    .home-section { margin-left: 240px; padding-bottom: 200px; }
+
+    /* ── HERO ── */
+    .radio-hero {
+      position: relative; min-height: 48vh;
+      display: flex; align-items: flex-end; padding: 0 5% 40px;
+      overflow: hidden;
+    }
+    .radio-hero-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center 30%;
+      filter: blur(20px) brightness(.4) saturate(1.2);
+      transform: scale(1.08);
+    }
+    .radio-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, var(--bg) 0%, rgba(8,8,8,.5) 50%, transparent 100%);
+    }
+    .radio-hero-content {
+      position: relative; z-index: 2;
+      display: flex; align-items: flex-end; gap: 32px; width: 100%;
+    }
+    .radio-hero-cover {
+      width: 180px; height: 180px; min-width: 180px;
+      border-radius: 14px; object-fit: cover;
+      box-shadow: 0 20px 50px rgba(0,0,0,.8);
+    }
+    .radio-hero-info { flex: 1; min-width: 0; }
+    .radio-hero-badge {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 2px; color: var(--accent); margin-bottom: 8px;
+    }
+    .radio-hero-titulo {
+      font-size: clamp(1.6rem, 4vw, 3rem);
+      font-weight: 900; letter-spacing: -1px; line-height: 1.05; margin-bottom: 10px;
+    }
+    .radio-hero-desc { font-size: 14px; color: var(--muted2); margin-bottom: 20px; }
+    .radio-hero-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+    .btn-play-radio {
+      background: var(--accent); color: #000;
+      border: none; padding: 12px 32px; border-radius: 50px;
+      font-weight: 700; font-size: 14px; cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      transition: transform .15s, background .2s;
+    }
+    .btn-play-radio:hover { background: #ff7a20; transform: scale(1.02); }
+    .btn-play-radio.playing { background: rgba(255,255,255,.15); color: #fff; }
+
+    /* ── CUERPO ── */
+    .radio-body { display: grid; grid-template-columns: 1fr 280px; gap: 32px; padding: 36px 5%; }
+
+    /* ── TRACKLIST ── */
+    .tracklist h3 {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--muted2); margin-bottom: 16px;
+    }
+    .track-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 10px 14px; border-radius: 10px; cursor: pointer;
+      transition: background .15s; border-bottom: 1px solid var(--border);
+    }
+    .track-row:hover { background: rgba(255,255,255,.05); }
+    .track-row.activo { background: rgba(255,98,0,.07); }
+    .track-num { font-size: 13px; color: var(--muted2); width: 22px; text-align: center; flex-shrink: 0; }
+    .track-cover {
+      width: 40px; height: 40px; border-radius: 6px; object-fit: cover;
+      background: var(--bg2); flex-shrink: 0;
+    }
+    .track-info { flex: 1; min-width: 0; }
+    .track-tit { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .track-art { font-size: 11px; color: var(--muted2); margin-top: 2px; }
+    .track-play-ico { color: var(--accent); font-size: 12px; flex-shrink: 0; display: none; }
+    .track-row.activo .track-play-ico { display: block; }
+    .track-row.activo .track-num { display: none; }
+
+    /* ── INFO CARD ── */
+    .info-card {
+      background: var(--bg2); border-radius: 14px;
+      padding: 20px; border: 1px solid var(--border); height: fit-content;
+    }
+    .info-card h3 {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--muted2); margin-bottom: 14px;
+    }
+    .info-stat {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px;
+    }
+    .info-stat:last-child { border-bottom: none; }
+    .info-stat-label { color: var(--muted2); }
+    .info-stat-val { font-weight: 700; }
+
+    /* ── ARTISTAS ── */
+    .artistas-card {
+      background: var(--bg2); border-radius: 14px;
+      padding: 20px; border: 1px solid var(--border); margin-top: 16px;
+    }
+    .artistas-card h3 {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--muted2); margin-bottom: 14px;
+    }
+    .artista-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 0; border-bottom: 1px solid var(--border); cursor: pointer;
+      transition: opacity .2s;
+    }
+    .artista-row:hover { opacity: .8; }
+    .artista-row:last-child { border-bottom: none; }
+    .artista-foto {
+      width: 36px; height: 36px; border-radius: 50%; object-fit: cover;
+      background: var(--bg); border: 1px solid var(--border);
+    }
+    .artista-nom { font-size: 13px; font-weight: 600; }
+
+    /* ── ERROR ── */
+    .error-page {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; height: 70vh; gap: 16px; text-align: center;
+    }
+    .error-page p { font-size: 15px; color: var(--muted2); }
+    .error-page a { color: var(--accent); text-decoration: none; font-size: 13px; }
+
+    @media (max-width: 900px) {
+      .home-section { margin-left: 0; padding-top: 24px; }
+      .radio-hero-cover { width: 130px; height: 130px; min-width: 130px; }
+      .radio-body { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .radio-hero-content { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .radio-hero-cover { width: 110px; height: 110px; min-width: 110px; }
+    }
+  </style>
+</head>
+<body>
+  
+  <section class="home-section" id="radio-section">
+    <div class="radio-hero" id="radio-hero">
+      <div class="radio-hero-bg" id="hero-bg"></div>
+      <div class="radio-hero-overlay"></div>
+      <div class="radio-hero-content">
+        <img class="radio-hero-cover" id="hero-cover" src="/img/home-banner.png" alt="">
+        <div class="radio-hero-info">
+          <p class="radio-hero-badge">Radio Superéxitos</p>
+          <h1 class="radio-hero-titulo" id="hero-titulo">—</h1>
+          <p class="radio-hero-desc" id="hero-desc"></p>
+          <div class="radio-hero-actions">
+            <button class="btn-play-radio" id="btn-play-todo" onclick="reproducirTodo()">
+              <i class="fas fa-play" id="play-ico"></i> Reproducir todo
+            </button>
+            <a href="/inicio" style="font-size:13px;color:var(--muted2);text-decoration:none">
+              <i class="fas fa-arrow-left"></i> Volver
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="radio-body">
+      
+      <div class="tracklist">
+        <h3 id="tracklist-titulo">Canciones</h3>
+        <div id="tracks-container"></div>
+      </div>
+
+      <div>
+        <div class="info-card">
+          <h3>Información</h3>
+          <div class="info-stat"><span class="info-stat-label">Canciones</span><span class="info-stat-val" id="info-total">0</span></div>
+        </div>
+        <div class="artistas-card" id="artistas-card" style="display:none">
+          <h3>Artistas</h3>
+          <div id="artistas-lista"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="master-player-container">
+    <div class="current-track-info">
+      <img src="/img/home-banner.png" alt="" class="album-art" id="player-art">
+      <div class="track-details">
+        <h4 class="track-title" id="player-titulo">—</h4>
+        <div class="artist-row">
+          <span class="artist-name" id="player-artista">—</span>
+          <button class="btn-follow" id="player-follow">Seguir</button>
+        </div>
+      </div>
+      <button class="btn-like" id="player-like"><i class="fa-regular fa-heart" id="heart-icon"></i></button>
+    </div>
+    <div class="player-controls-section">
+      <div class="control-buttons">
+        <button class="ctrl-btn" id="btn-shuffle"><i class="fas fa-random"></i></button>
+        <button class="ctrl-btn" id="btn-prev"><i class="fas fa-step-backward"></i></button>
+        <button class="play-pause-btn" id="btn-playpause"><i class="fas fa-play-circle"></i></button>
+        <button class="ctrl-btn" id="btn-next"><i class="fas fa-step-forward"></i></button>
+        <button class="ctrl-btn" id="btn-repeat"><i class="fas fa-redo"></i></button>
+      </div>
+      <div class="progress-bar-wrapper">
+        <span class="time" id="time-current">0:00</span>
+        <input type="range" class="seek-bar" id="seek-bar" min="0" max="100" value="0">
+        <span class="time" id="time-total">0:00</span>
+      </div>
+    </div>
+    <div class="extra-controls">
+      <i class="fas fa-volume-up"></i>
+      <input type="range" class="volume-bar" id="volume-bar" min="0" max="100" value="70">
+    </div>
+  </div>
+
+<script type="module">
+import { getUsuarioLocal } from '/js/firebase-auth.js';
+import { getFirestore, doc, getDoc }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { initializeApp, getApps }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+
+const FB = {
+  apiKey:'AIzaSyAreMBZ0Rm-5UIm9QmcZFPdSUqZeJRXWR4',
+  authDomain:'sneak-studio-9546b.firebaseapp.com',
+  projectId:'sneak-studio-9546b',
+  storageBucket:'sneak-studio-9546b.firebasestorage.app',
+  messagingSenderId:'82447095158',
+  appId:'1:82447095158:web:d4db0739bfefcd397fd657',
+};
+const _app = getApps().length ? getApps()[0] : initializeApp(FB);
+const db = getFirestore(_app);
+
+const $ = id => document.getElementById(id);
+let _canciones = [];
+let _playing = false;
+let _radioItem = null;
+
+async function init() {
+  const params = new URLSearchParams(location.search);
+  const idx = parseInt(params.get('radio') || '0');
+
+  
+
+  let item = null;
+  try {
+    const stored = sessionStorage.getItem('sneak_radio_item');
+    if (stored) {
+      const data = JSON.parse(stored);
+      if (data.idx === idx) item = data;
+    }
+  } catch(_) {}
+
+  
+
+  if (!item) {
+    try {
+      const snap = await getDoc(doc(db, 'admin_config', 'inicio'));
+      const cfg  = snap.exists() ? snap.data() : {};
+      const radioArr = cfg.radio || [];
+      item = radioArr[idx] || null;
+    } catch(e) { console.warn('Radio Firestore:', e); }
+  }
+
+  if (!item) {
+    mostrarError('Esta entrada de radio no existe.');
+    return;
+  }
+
+  _radioItem  = item;
+  _canciones  = item.canciones_data || [];
+  document.title = (item.titulo || 'Radio') + ' — Sneak Studio';
+  renderRadio(item);
+}
+
+function renderRadio(item) {
+  const portada = item.imagen || _canciones[0]?.portada || '/img/home-banner.png';
+
+  
+
+  const bg = $('hero-bg'); if(bg) bg.style.backgroundImage = `url(${portada})`;
+  const cover = $('hero-cover'); if(cover){ cover.src=portada; cover.onerror=()=>{ cover.src='/img/home-banner.png'; }; }
+  const tit = $('hero-titulo'); if(tit) tit.textContent = item.titulo || '—';
+  const desc = $('hero-desc'); if(desc && item.descripcion) desc.textContent = item.descripcion;
+  const tot = $('info-total'); if(tot) tot.textContent = _canciones.length;
+
+  
+
+  renderTracks();
+
+  
+
+  const artistas = [];
+  const vistos = new Set();
+  _canciones.forEach(c => {
+    if (c.uid && !vistos.has(c.uid)) {
+      vistos.add(c.uid);
+      artistas.push({ uid: c.uid, nombre: c.artista || '—', foto: c.artistaFoto || '' });
+    }
+  });
+
+  if (artistas.length) {
+    const card = $('artistas-card'); if(card) card.style.display = 'block';
+    const lista = $('artistas-lista');
+    if (lista) {
+      lista.innerHTML = artistas.map(a => `
+        <div class="artista-row" onclick="window.location.href = '/perfil?uid=${a.uid}'">
+          <img class="artista-foto" src="${a.foto||'/img/porfile.jpeg'}"
+            onerror=\"this.src='/img/porfile.jpeg''\" alt="">
+          <span class="artista-nom">${a.nombre}</span>
+        </div>`).join('');
+    }
+  }
+}
+
+function renderTracks(activoIdx = -1) {
+  const container = $('tracks-container');
+  if (!container) return;
+  if (!_canciones.length) {
+    container.innerHTML = '<p style="color:var(--muted2);font-size:14px;padding:24px 0">Sin canciones en esta entrada.</p>';
+    return;
+  }
+  container.innerHTML = _canciones.map((c, i) => `
+    <div class="track-row ${i === activoIdx ? 'activo' : ''}" onclick="playTrack(${i})">
+      <span class="track-num">${i + 1}</span>
+      <i class="fas fa-pause track-play-ico"></i>
+      <img class="track-cover" src="${c.portada||''}" onerror=\"this.src='/img/home-banner.png'\" alt="">
+      <div class="track-info">
+        <div class="track-tit">${(c.titulo||'—').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+        <div class="track-art">${(c.artista||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+      </div>
+    </div>`).join('');
+}
+
+window.reproducirTodo = function() {
+  if (!_canciones.length) return;
+  _playing = !_playing;
+  const btn = $('btn-play-todo'); const ico = $('play-ico');
+  if (btn) btn.classList.toggle('playing', _playing);
+  if (ico) ico.className = _playing ? 'fas fa-pause' : 'fas fa-play';
+  if (_playing && typeof window.cargarCola === 'function') {
+    window.cargarCola(_canciones, 0);
+    renderTracks(0);
+  } else if (typeof window._togglePlayerPause === 'function') {
+    window._togglePlayerPause();
+  }
+};
+
+window.playTrack = function(idx) {
+  const c = _canciones[idx]; if (!c?.audio) { window.location.href = `/cancion?id=${c.id}`; return; }
+  if (typeof window.cargarCola === 'function') window.cargarCola(_canciones, idx);
+  renderTracks(idx);
+  _playing = true;
+  const btn = $('btn-play-todo'); const ico = $('play-ico');
+  if (btn) btn.classList.add('playing');
+  if (ico) ico.className = 'fas fa-pause';
+};
+
+window._onSongPauseChange = isPaused => {
+  _playing = !isPaused;
+  const btn = $('btn-play-todo'); const ico = $('play-ico');
+  if (btn) btn.classList.toggle('playing', !isPaused);
+  if (ico) ico.className = isPaused ? 'fas fa-play' : 'fas fa-pause';
+};
+
+function mostrarError(msg) {
+  const s = $('radio-section');
+  if (s) s.innerHTML = `<div class="error-page"><p>${msg}</p><a href="/inicio">← Volver al inicio</a></div>`;
+}
+
+init();
+</script>
+    
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="/js/emailjs-config.js"></script>
+  <script src="/js/denuncia.js"></script>
+  <script src="/js/layout.js"></script>
+  <script type="module" src="/js/auth-guard.js"></script>
+  <script src="/js/scroll-buttons.js"></script>
+</body>
+</html>

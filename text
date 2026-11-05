@@ -1,0 +1,3 @@
+npm install
+cp .env.example .env   # rellenar con tus claves
+npm run dev

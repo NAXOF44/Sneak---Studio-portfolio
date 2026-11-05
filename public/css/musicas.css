@@ -1,0 +1,450 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poller+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+    background-color: #000000;
+    color: white;
+    overflow-x: hidden;
+}
+
+.title {
+    font-family: "Outfit", sans-serif;
+    text-align: center;
+    font-size: large;
+    margin-top: 50px;
+}
+
+.title>p {
+    margin-top: -25px;
+}
+
+.title>h1 {
+    font-size: 55px;
+    line-height: 0.80;
+}
+
+.title>h1>i {
+    font-family: "Playfair Display", serif;
+    font-style: italic;
+    font-weight: 500;
+}
+
+.title p {
+    opacity: 100%;
+}
+
+header {
+    font-family: "Outfit", sans-serif;
+}
+
+nav {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+     
+    transform: translateX(-50%);
+     
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    border-radius: 50px;
+
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.15);
+     
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    z-index: 9999;
+    padding: 0 20px;
+    color: black;
+}
+
+  
+.mus a {
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 10px 20px;
+    border-radius: 50px;
+
+}  
+
+nav ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav a {
+    text-decoration: none;
+    color: #fff;
+    font-family: "Outfit", sans-serif;
+}
+
+.btn-tit {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn-1 {
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+    color: #000;
+    width: 100px;
+    height: 40px;
+}
+
+.btn-2 {
+    background-color: #000000;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    width: 100px;
+    height: 40px;
+}
+
+.btn-nav {
+    display: flex;
+    justify-content: left;
+    margin-left: 50px;
+
+}
+
+.btn-nav button {
+    height: 35px;
+    margin: 5px;
+}
+
+.btn-nav1 {
+    background: rgb(255, 255, 255);
+    color: #000000;
+    border-radius: 50px;
+    border: none;
+    padding: 10px;
+    width: 110px;
+}
+
+.btn-nav2 {
+    border: solid 0.1px white;
+    background: none;
+    color: #fff;
+    border-radius: 50px;
+    padding: 10px;
+    width: 110px;
+
+}
+
+nav>ul {
+    margin-left: 150px;
+}
+
+nav>ul>li :hover {
+    color: #d8d8d8;
+
+}
+
+.banner {
+    margin: 0 auto;
+    width: fit-content;
+    position: relative;
+    top: 180px;
+}
+
+.banner img {
+    width: 1090px;
+    height: 300px;
+}
+
+.banner h1 {
+    line-height: 0.8;
+    margin: 0 auto;
+    width: fit-content;
+    position: relative;
+    left: -280px;
+    top: -275px;
+    font-family: "Outfit", sans-serif;
+    font-size: 55px;
+    font-size: bold;
+}
+
+.banner i {
+    color: #ff6200;
+    font-family: "Playfair Display", serif;
+    font-weight: 400;
+}
+
+.banner p {
+    width: 500px;
+    position: relative;
+    top: -270px;
+    padding: 0px 50px;
+}
+
+.btns-banner {
+  display: flex;
+  gap: 20px;
+  position: relative;
+  top: -260px;
+  left: 50px;
+}
+
+.btn-fondo {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    padding: 15px 30px;
+    border-radius: 80px;
+    border: none;
+}
+
+.btn-sin-fondo {
+    background: none;
+    border:solid 1px #ffffff;
+    border-color: solid 1px blue;
+    color: rgb(255, 255, 255);
+    padding: 15px 30px;
+    border-radius: 80px;
+}
+
+.nus-play img {
+    width: 450px;
+    height: 285px;
+    position: relative;
+    left: 40px;
+}
+
+.icons-play {
+    display: flex;
+    gap: 15px;
+    margin: 0 auto;
+    width: fit-content;
+    position: relative;
+    top: -50px;
+    left: 20px;
+}
+
+.icons-play img {
+    width: 15px;
+    position: relative;
+    top: -25px;
+
+}
+
+.moment-play {
+    margin: 0 auto;
+    width: fit-content;
+    position: relative;
+    left: -370px;
+    top: -30px;
+
+}
+
+.barra-mus {
+    color: #ff6200;
+    margin: 0 auto;
+    width: fit-content;
+    position: relative;
+    top: -70px;
+    left: -10px;
+
+    #progress-bar {
+        -webkit-appearance: none;  
+        appearance: none; 
+        width: 100%;
+        height: 4px; 
+        background: #ffffff; 
+        border-radius: 5px;
+        background-size: 0% 100%;  
+        background-repeat: no-repeat;
+        cursor: pointer;
+      }
+      
+       
+      #progress-bar::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: px;
+        width: 12px;
+        border-radius: 50%;
+        background: #fff;
+        cursor: pointer;
+       
+        transition: all 0.2s ease-in-out;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      }
+      
+       
+      #progress-bar:hover {
+        height: 6px;  
+      }
+      
+      #progress-bar:hover::-webkit-slider-thumb {
+        opacity: 1;  
+      }
+      
+       
+      #progress-bar::-moz-range-thumb {
+        height: 12px;
+        width: 12px;
+        border: none;
+        border-radius: 50%;
+        background: #fff;
+        cursor: pointer;
+        opacity: 0;
+        transition: all 0.2s ease-in-out;
+      }
+      
+      #progress-bar:hover::-moz-range-thumb {
+        opacity: 1;
+      }
+}
+
+.abajo-us {
+    display: flex;
+    gap: 10px;
+    position: relative;
+    top: -35px;
+
+}
+
+.abajo-us p {
+    opacity: 50%;
+}
+
+.musics h2 {
+    font-family: "Outfit", sans-serif;
+    font-weight: 300;
+}
+
+.abajo-us .point {
+    color: rgb(32, 32, 32);
+    font-size: 50px;
+    position: relative;
+    top: -70px;
+}
+
+.musicas2 {
+    width: 2000px;
+    display: flex;
+    gap: 50px;
+}
+
+.musics2 {
+    background-color: #3e3e3e;
+    height: 60px;
+    width: 290px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+}
+
+.musics2 h2 {
+    font-weight: 400;
+}
+
+.cont {
+    padding: 10px;
+    position: relative;
+    top: -20px;
+    left: 10px;
+}
+
+.mus-one {
+    display: flex;
+    gap: 30px;
+}
+
+.musics-play-public {
+    margin: 0 auto;
+    width: fit-content;
+    position: relative;
+    left: 250px;
+    top: -350px;
+}
+
+.musics-play-public {
+    font-size: 14px;
+}
+
+.rec {
+    background-color: #ffffff;
+    color: #000000;
+    width: 445px;
+    height: 190px;
+    margin: 0 auto;
+    position: relative;
+    top: -320px;
+    left: -325px;
+    border-radius: 20px;
+}
+
+.cont-mus {
+    padding: 0 50px;
+    padding-top: 50px; 
+}
+
+.cont-mus h1 {
+    font-size: 30px;
+    line-height: 0.8;
+    font-style: normal;
+    font-family: "Outfit", sans-serif;
+    font-weight: 500;
+    width: 200px;
+    margin-top: -10px;
+
+}
+
+.cont-mus p {
+    margin-top: -15px;
+    font-size: 14px;
+}
+
+.cont-mus i {
+    color: #000000;
+    font-family: "Playfair Display", serif;
+}
+
+.cont-mus img {
+    margin: 0 auto;
+    width: fit-content;
+    position: relative;
+    left: 300px;
+    top: -150px;
+    width: 70px;
+
+}
+
+.temazos {
+    display: flex;
+    gap: 10px;
+    margin: 0 auto;
+    width: fit-content;
+    position: relative;
+    top: -510px;
+    left: 240px;
+}
+
+.icons-super {
+    margin: 0 auto;
+    width: fit-content;
+    gap: 150px;
+    display: flex;
+    
+}
+
+.icons-super img {
+    gap: 1000px;
+    position: relative;
+    top: -690px;
+    left: 190px;
+    
+}
+

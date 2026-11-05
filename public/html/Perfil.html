@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/Bar-player.css">
+  <link rel="stylesheet" href="/css/proyectos.css">
+  <link rel="stylesheet" href="/css/Biblioteca.css">
+  <link rel="stylesheet" href="/css/Album-listas.css">
+  <link rel="stylesheet" href="/css/perfil.css">
+  <link rel="stylesheet" href="/css/footer.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/x-icon" href="/favicon_io/favsk (6).svg">
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+  <title>Sneak- studio Proyectos</title>
+</head>
+
+<body>
+  <section id="app" class="home-section">
+      <header class="artist-header">
+        <div class="artist-overlay"></div>
+        <div class="artist-content">
+          <div class="verified-badge" id="p-badge">
+            <i class="fa-solid fa-record-vinyl"></i> <span id="p-tipo">Productor</span>
+          </div>
+          <h1 class="artist-name-display" id="p-nombre">Naxof_44</h1>
+
+          <div class="artist-stats-bar">
+            <div class="stat-item">
+              <span class="stat-value" id="p-repros">0</span>
+              <span class="stat-label">Reproducciones</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-value" id="p-seguidores">0</span>
+              <span class="stat-label">Seguidores</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-value" id="p-siguiendo">0</span>
+              <span class="stat-label">Siguiendo</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-value" id="p-canciones">0</span>
+              <span class="stat-label">Canciones</span>
+            </div>
+          </div>
+
+          <div class="profile-actions">
+            <button class="btn-play-all"><i class="fas fa-play"></i> Escuchar</button>
+            <button class="btn-follow-profile" id="btn-seguir" onclick="toggleSeguir()">Seguir</button>
+            <a href="/onboarding?from=perfil" class="btn-edit-perfil">
+              <i class="fas fa-pen"></i> Editar perfil
+            </a>
+
+          </div>
+        </div>
+      </header>
+
+      <div class="artist-body">
+
+        <div class="perfil-info-row" id="perfil-info-row">
+          <div class="perfil-bio-box">
+            <p class="perfil-bio-txt" id="p-bio"></p>
+            <p class="perfil-ubic" id="p-ubic"></p>
+            <div class="perfil-gens" id="p-gens"></div>
+          </div>
+          <div class="perfil-redes" id="p-redes"></div>
+        </div>
+
+        <div class="popular-section">
+          <h2>Top más populares</h2>
+          <div class="compact-song-list" id="song-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="contenni-footer">
+        <div class="prin-footer">
+          <p>Use cases</p>
+          <p>Resources</p>
+          <p class="exp-foot">Explore</p>
+
+          <div class="icons">
+            <a href="https://www.instagram.com/"><i class="fa-brands fa-instagram"></i></a>
+            <a href=""> <i class="fa-brands fa-square-x-twitter"></i></a>
+            <a href=""><i class="fa-brands fa-facebook"></i></a>
+          </div>
+        </div>
+
+        <div class="opcion-footer">
+          <div class="foot-1">
+            <p>UI design</p>
+            <p>UX design</p>
+            <p>Wireframing</p>
+            <p>Diagramming</p>
+            <p>Brainstorming</p>
+            <p>Online whiteboard</p>
+            <p>Team collaboration</p>
+          </div>
+
+          <div class="foot-2">
+            <p>Design</p>
+            <p>Prototyping</p>
+            <p>Development features</p>
+            <p>Design systems</p>
+            <p>Collaboration features</p>
+            <p>Design process</p>
+            <p>FigJam</p>
+          </div>
+          <div class="foot-3">
+            <p>Blog</p>
+            <p>Best practices</p>
+            <p>Colors</p>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="derechos-footer">
+        <a href="">
+          <p>Polituca de pricacidad</p>
+        </a>
+        <a href="">
+          <p>Política de Cookies</p>
+        </a>
+        <a href="">
+          <p>Aviso Legal</p>
+        </a>
+        <a href="">
+          <p>Condiciones de Uso</p>
+        </a>
+        <a href="">
+          <p>Seguridad y privacidad</p>
+        </a>
+      </div>
+    </footer>
+
+  </section>
+
+  <script type="module">
+  
+
+  
+
+  
+
+  
+
+  
+
+  import { getUsuarioLocal, cerrarSesion } from '/js/firebase-auth.js';
+  import {
+    leerPerfil, leerMisCanciones, leerCancionesDeUsuario,
+    toggleSeguir, isSiguiendo, getSeguidoresCount,
+    toggleLike, isLiked, getUID
+  } from '/js/sneak-db.js';
+
+  const yo     = getUsuarioLocal();
+  if (!yo?.uid) { window.location.replace('/login'); }
+
+  
+
+  const params    = new URLSearchParams(location.search);
+  const uidParam  = params.get('uid');
+  const esMiPerfil = !uidParam || uidParam === yo.uid;
+  const uidObjetivo = esMiPerfil ? yo.uid : uidParam;
+
+  const $ = id => document.getElementById(id);
+  const esc = s => !s ? '' : String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const fmt = n => !n ? '0' : n >= 1e6 ? (n/1e6).toFixed(1)+'M' : n >= 1e3 ? (n/1e3).toFixed(0)+'k' : String(n);
+
+  async function init() {
+    
+
+    let perfil = esMiPerfil ? yo : await leerPerfil(uidObjetivo).catch(() => null);
+    if (!perfil) {
+      document.body.innerHTML = '<div style="text-align:center;padding:80px 20px;color:#555"><p>Perfil no encontrado</p><a href="/inicio" style="color:#FF6200">← Volver</a></div>';
+      return;
+    }
+
+    
+
+    if (!esMiPerfil && perfil.baneado === true) {
+      document.body.innerHTML = '<div style="text-align:center;padding:80px 20px;color:#555"><p>Este perfil no está disponible.</p><a href="/inicio" style="color:#FF6200">← Volver</a></div>';
+      return;
+    }
+
+    
+
+    const header = document.querySelector('.artist-header');
+    if (header && perfil.foto && !perfil.foto.startsWith('data:')) {
+      header.style.backgroundImage = `url(${perfil.foto})`;
+    }
+    const pNombre = $('p-nombre'); if (pNombre) pNombre.textContent = perfil.username || perfil.nombre || 'Artista';
+    const pTipo   = $('p-tipo');   if (pTipo)   pTipo.textContent   = perfil.tipos?.length ? perfil.tipos.join(' · ') : 'Oyente';
+    document.title = (perfil.username || perfil.nombre || 'Perfil') + ' — Sneak Studio';
+
+    
+
+    const bioEl = $('p-bio');
+    if (bioEl) { if (perfil.bio) bioEl.textContent = perfil.bio; else bioEl.style.display = 'none'; }
+
+    const ubicEl = $('p-ubic');
+    if (ubicEl) {
+      if (perfil.ubicacion) ubicEl.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${esc(perfil.ubicacion)}`;
+      else ubicEl.style.display = 'none';
+    }
+
+    const gensEl = $('p-gens');
+    if (gensEl && perfil.generos?.length)
+      gensEl.innerHTML = perfil.generos.map(g => `<span class="perf-gen-pill">${esc(g)}</span>`).join('');
+
+    const redesEl = $('p-redes');
+    const iconos = { instagram:'fab fa-instagram', tiktok:'fab fa-tiktok', youtube:'fab fa-youtube', spotify:'fab fa-spotify', soundcloud:'fab fa-soundcloud' };
+    if (redesEl && perfil.redes) {
+      redesEl.innerHTML = Object.entries(perfil.redes).filter(([,v]) => v)
+        .map(([k, v]) => {
+          const safeUrl = v.startsWith('http') ? v : 'https://' + v;
+          if (safeUrl.startsWith('javascript:')) return '';
+          return `<a href="${safeUrl.replace(/"/g,'&quot;')}" target="_blank" rel="noopener noreferrer" class="perf-red-btn">
+            <i class="${iconos[k] || 'fas fa-link'}"></i><span>${esc(k[0].toUpperCase()+k.slice(1))}</span></a>`;
+        }).join('');
+    }
+
+    
+
+    let canciones = [];
+    try {
+      const rawCanciones = esMiPerfil
+        ? await leerMisCanciones()
+        : await leerCancionesDeUsuario(uidObjetivo);
+      
+
+      canciones = esMiPerfil ? rawCanciones : rawCanciones.filter(c => c.activo !== false);
+    } catch (e) { console.warn('Perfil canciones:', e.message); }
+
+    
+
+    const totalRepros = canciones.reduce((a, c) => a + (c.reproducciones || 0), 0);
+    const seguidores  = await getSeguidoresCount(uidObjetivo).catch(() => perfil.seguidores || 0);
+
+    const pR  = $('p-repros');    if (pR)  pR.textContent  = fmt(totalRepros);
+    const pS  = $('p-seguidores');if (pS)  pS.textContent  = fmt(seguidores);
+    const pSi = $('p-siguiendo'); if (pSi) pSi.textContent = fmt(perfil.siguiendo || 0);
+    const pC  = $('p-canciones'); if (pC)  pC.textContent  = canciones.length;
+
+    
+
+    if (esMiPerfil) {
+      const cantEl  = document.querySelector('.cant-canciones p');
+      const creacEl = document.querySelector('.creaciones p');
+      if (cantEl)  cantEl.textContent  = canciones.length;
+      if (creacEl) creacEl.textContent = canciones.length === 1 ? 'creación' : 'creaciones';
+    }
+
+    
+
+    const btnSeg   = $('btn-seguir');
+    const btnEditar= document.querySelector('.btn-edit-perfil');
+    const btnPlay  = document.querySelector('.btn-play-all');
+
+    if (esMiPerfil) {
+      
+
+      if (btnSeg)    btnSeg.style.display    = 'none';
+      if (btnEditar) btnEditar.style.display = '';
+    } else {
+      
+
+      if (btnEditar) btnEditar.style.display = 'none';
+      if (btnSeg) {
+        btnSeg.style.display = '';
+        
+
+        const sigActual = await isSiguiendo(uidObjetivo).catch(() => false);
+        actualizarBtnSeguir(btnSeg, sigActual);
+        
+
+        if (typeof snkActivarReportPerfil === 'function') {
+          snkActivarReportPerfil(perfil?.nombre || perfil?.displayName || 'Perfil', uidObjetivo);
+        }
+      }
+    }
+
+    
+
+    if (btnPlay && canciones.length) {
+      btnPlay.addEventListener('click', () => {
+        const conAudio = canciones.filter(c => c.audio);
+        if (conAudio.length && typeof window.cargarCola === 'function') {
+          window.cargarCola(conAudio, 0);
+        }
+      });
+    }
+
+    
+
+    const lista = $('song-list');
+    if (lista) {
+      if (!canciones.length) {
+        lista.innerHTML = esMiPerfil
+          ? `<div style="padding:32px 20px;text-align:center;color:#444;font-size:14px">
+               <p>Aún no has publicado canciones.</p>
+               <a href="/creacion" style="color:#FF6200;text-decoration:none;display:inline-block;margin-top:10px">+ Crear tu primera canción</a>
+             </div>`
+          : `<div style="padding:32px 20px;text-align:center;color:#444;font-size:14px"><p>Este artista aún no ha publicado canciones.</p></div>`;
+      } else {
+        
+
+        const likedIds = new Set();
+        try {
+          const likeChecks = await Promise.all(canciones.slice(0,10).map(c => isLiked(c.id).then(v => [c.id, v])));
+          likeChecks.forEach(([id, liked]) => { if (liked) likedIds.add(id); });
+        } catch(_) {}
+
+        lista.innerHTML = canciones
+          .sort((a, b) => (b.reproducciones || 0) - (a.reproducciones || 0))
+          .slice(0, 10)
+          .map((c, i) => `
+            <div class="song-card" style="cursor:pointer">
+              <span class="rank">${i + 1}</span>
+              <img src="${c.portada || '/img/home-banner.png'}" class="mini-cover"
+                onerror=\"this.src='/img/home-banner.png''\"
+                onclick="window.location.href = '/cancion?id=${c.id}'">
+              <div class="song-info-minimal" onclick="window.location.href = '/cancion?id=${c.id}'">
+                <span class="s-title">${esc(c.titulo)}</span>
+                <span class="s-plays">${fmt(c.reproducciones || 0)} reproducciones</span>
+              </div>
+              <span class="s-time">—</span>
+              <i class="${likedIds.has(c.id) ? 'fas' : 'far'} fa-heart song-like-icon"
+                 id="like-song-${c.id}"
+                 style="cursor:pointer;color:${likedIds.has(c.id) ? '#ff4444' : '#555'};font-size:16px;padding:8px"
+                 onclick="toggleLikeCancion('${c.id}', this)"></i>
+            </div>`).join('');
+      }
+    }
+  window.__sneakReady && window.__sneakReady();
+    
+
+    document.querySelectorAll('.log_out a, #btn-logout').forEach(el => {
+      el.addEventListener('click', async e => { e.preventDefault(); await cerrarSesion(); });
+    });
+  }
+
+  
+
+  window.toggleSeguir = async function() {
+    if (esMiPerfil) return;
+    const btn = $('btn-seguir');
+    if (!btn) return;
+    try {
+      const nuevo = await toggleSeguir(uidObjetivo);
+      actualizarBtnSeguir(btn, nuevo);
+      
+
+      const pS = $('p-seguidores');
+      if (pS) {
+        const actual = parseInt(pS.textContent.replace(/[kM]/,'')) || 0;
+        pS.textContent = fmt(nuevo ? actual + 1 : Math.max(0, actual - 1));
+      }
+      
+
+      if (typeof window._onPlayerSeguirChange === 'function') {
+        window._onPlayerSeguirChange(uidObjetivo, nuevo);
+      }
+    } catch(e) { console.error('toggleSeguir:', e); }
+  };
+
+  function actualizarBtnSeguir(btn, sig) {
+    btn.textContent      = sig ? 'Siguiendo' : 'Seguir';
+    btn.style.background = sig ? 'rgba(255,255,255,.15)' : '';
+    btn.style.borderColor= sig ? 'rgba(255,255,255,.4)'  : '';
+  }
+
+  
+
+  window.toggleLikeCancion = async function(cancionId, ico) {
+    try {
+      const nuevo = await toggleLike(cancionId);
+      ico.className   = nuevo ? 'fas fa-heart song-like-icon' : 'far fa-heart song-like-icon';
+      ico.style.color = nuevo ? '#ff4444' : '#555';
+      
+
+      if (typeof window._onPlayerLikeChange === 'function') {
+        window._onPlayerLikeChange(cancionId, nuevo);
+      }
+    } catch(e) { console.error('toggleLikeCancion:', e); }
+  };
+
+  init();
+  </script>
+    
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="/js/emailjs-config.js"></script>
+  <script src="/js/denuncia.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/player-global.js"></script>
+  <script type="module" src="/js/auth-guard.js"></script>
+  <script src="/js/scroll-buttons.js"></script>
+</body>
+
+</html>

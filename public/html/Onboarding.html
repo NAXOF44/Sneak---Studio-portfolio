@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configura tu perfil — Sneak Studio</title>
+  <link rel="icon" type="image/x-icon" href="/favicon_io/favsk (6).svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+      --bg:     #060606;
+      --s1:     #0c0c0c;
+      --s2:     #141414;
+      --s3:     #1c1c1c;
+      --border: rgba(255,255,255,.07);
+      --b2:     rgba(255,255,255,.13);
+      --accent: #FF6200;
+      --muted:  #444;
+      --muted2: #666;
+      --err:    #ff4444;
+      --white:  #ffffff;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+    }
+
+    /* ── LAYOUT ── */
+    .wrap { display:flex; height:100vh; }
+
+    /* ── IZQUIERDA ── */
+    .left {
+      width: 280px;
+      min-width: 240px;
+      background: var(--s1);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 36px 28px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .left::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 1px; height: 100%;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,.04), transparent);
+    }
+
+    .left-logo img { height: 24px; opacity:.9; }
+
+    .steps {
+      margin-top: 44px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .s-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 9px 10px;
+      border-radius: 10px;
+      transition: background .2s;
+      cursor: default;
+    }
+
+    .s-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--s3);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700;
+      color: var(--muted2);
+      flex-shrink: 0;
+      transition: all .35s cubic-bezier(.22,1,.36,1);
+    }
+
+    .s-label {
+      font-size: 12px; font-weight: 500;
+      color: var(--muted2);
+      transition: color .3s;
+    }
+
+    .s-item.on { background: rgba(255,255,255,.04); }
+    .s-item.on .s-num { background:#fff; border-color:#fff; color:#000; }
+    .s-item.on .s-label { color:#fff; }
+
+    .s-item.done .s-num {
+      background: rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.15);
+      color: rgba(255,255,255,.5);
+    }
+    .s-item.done .s-num::after { content:'✓'; font-size:11px; }
+    .s-item.done .s-num span { display:none; }
+    .s-item.done .s-label { color: var(--muted); }
+
+    .left-foot {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.8;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+
+    /* ── DERECHA ── */
+    .right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 64px;
+      overflow-y: auto;
+      position: relative;
+      background: var(--bg);
+    }
+
+    .right::-webkit-scrollbar { width: 2px; }
+    .right::-webkit-scrollbar-thumb { background: var(--s3); }
+
+    /* ── BARRA PROGRESO ── */
+    .prog-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: var(--s2);
+    }
+    .prog-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #ff8c42);
+      transition: width .6s cubic-bezier(.22,1,.36,1);
+    }
+
+    /* ── PANEL ── */
+    .panel {
+      width: 100%;
+      max-width: 460px;
+      display: none;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .panel.on {
+      display: flex;
+      animation: fadeUp .4s cubic-bezier(.22,1,.36,1);
+    }
+
+    .panel.out {
+      animation: fadeDown .3s cubic-bezier(.22,1,.36,1) forwards;
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    @keyframes fadeDown {
+      from { opacity:1; transform:translateY(0); }
+      to   { opacity:0; transform:translateY(-12px); }
+    }
+
+    .step-tag {
+      font-size: 10px; font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .step-h {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -.5px;
+    }
+
+    .step-sub {
+      font-size: 13px;
+      color: var(--muted2);
+      line-height: 1.65;
+      margin-top: -10px;
+    }
+
+    /* ── FOTO ── */
+    .foto-wrap {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .foto-circle {
+      width: 88px; height: 88px;
+      border-radius: 50%;
+      background: var(--s2);
+      border: 1.5px solid rgba(255,255,255,.15);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      transition: border-color .2s, transform .2s;
+    }
+    .foto-circle:hover { border-color: rgba(255,255,255,.3); transform: scale(1.03); }
+    .foto-circle i { font-size: 22px; color: var(--muted2); pointer-events:none; }
+
+    #foto-prev {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; display: none;
+    }
+
+    .foto-info { display:flex; flex-direction:column; gap:6px; }
+    .foto-info strong { font-size: 13px; font-weight:600; }
+    .foto-hint { font-size: 11px; color: var(--muted2); }
+    .foto-info .btn-foto {
+      background: var(--s2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 14px;
+      color: rgba(255,255,255,.7);
+      font-size: 12px; font-weight:500;
+      cursor:pointer;
+      width: fit-content;
+      transition: all .2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .foto-info .btn-foto:hover { border-color: var(--b2); color:#fff; }
+
+    /* ── CAMPOS ── */
+    .campo { display:flex; flex-direction:column; gap:6px; }
+
+    .campo label {
+      font-size: 10px; font-weight:700;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: var(--muted2);
+    }
+
+    .campo input, .campo textarea {
+      background: var(--s2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 13px;
+      color: #fff;
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      outline: none; resize: none;
+      transition: border-color .2s, background .2s;
+    }
+    .campo input:focus, .campo textarea:focus {
+      border-color: rgba(255,255,255,.2);
+      background: var(--s3);
+    }
+    .campo input::placeholder, .campo textarea::placeholder { color: #2e2e2e; }
+    .campo input.error { border-color: var(--err) !important; }
+
+    .campo-prefix { position: relative; }
+    .campo-prefix span {
+      position: absolute; left: 13px; top:50%;
+      transform: translateY(-50%);
+      color: var(--muted2); font-size: 13px;
+    }
+    .campo-prefix input { padding-left: 24px; }
+
+    .char-count { font-size:11px; color:var(--muted); text-align:right; margin-top:-2px; }
+
+    .err-msg {
+      font-size: 11px; color: var(--err);
+      margin-top: -2px; display: none;
+      animation: fadeUp .2s ease;
+    }
+
+    /* ── TIPO GRID ── */
+    .tipo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .tipo-card {
+      background: var(--s2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 14px;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .tipo-card:hover { border-color: var(--b2); background: var(--s3); }
+    .tipo-card.sel { border-color: #fff; background: #fff; color: #000; }
+
+    .tipo-ico {
+      font-size: 16px;
+      width: 34px; height: 34px;
+      border-radius: 9px;
+      background: var(--s3);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
+      color: rgba(255,255,255,.6);
+    }
+    .tipo-card.sel .tipo-ico { background: #111; border-color: #111; color: #fff; }
+    .tipo-card h3 { font-family:'Inter',sans-serif; font-size:12px; font-weight:700; }
+    .tipo-card p { font-size:11px; color:var(--muted2); line-height:1.5; }
+    .tipo-card.sel h3 { color:#000; }
+    .tipo-card.sel p { color:#555; }
+    .tipo-required { font-size:11px; color:var(--err); display:none; }
+
+    /* ── GÉNEROS ── */
+    .gen-grid { display:flex; flex-wrap:wrap; gap:6px; }
+
+    .gen-pill {
+      background: var(--s2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 13px;
+      font-size: 12px;
+      color: rgba(255,255,255,.55);
+      cursor: pointer;
+      transition: all .18s;
+      user-select: none;
+    }
+    .gen-pill:hover { border-color: var(--b2); color:#fff; }
+    .gen-pill.sel {
+      background: #fff; color: #000;
+      border-color: #fff; font-weight:600;
+    }
+    .gen-hint { font-size: 11px; color: var(--muted2); }
+    .gen-required { font-size:11px; color:var(--err); display:none; }
+
+    /* ── REDES ── */
+    .redes-list { display:flex; flex-direction:column; gap:7px; }
+
+    .red-row {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--s2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 13px;
+      transition: border-color .2s;
+    }
+    .red-row:focus-within { border-color: rgba(255,255,255,.18); }
+    .red-row.filled { border-color: rgba(255,255,255,.15); }
+    .red-row.error-red { border-color: var(--err); }
+
+    .red-ico {
+      width: 26px; height: 26px;
+      border-radius: 7px;
+      background: var(--s3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; color: rgba(255,255,255,.45);
+      flex-shrink: 0;
+    }
+
+    .red-row input {
+      flex:1; background:none; border:none; outline:none;
+      color:#fff; font-size:12px; font-family:'Inter',sans-serif;
+    }
+    .red-row input::placeholder { color:#2a2a2a; }
+    .red-check { color:#4caf50; font-size:12px; display:none; }
+    .red-row.filled .red-check { display:block; }
+
+    .redes-count { font-size:12px; color:var(--muted2); }
+    .redes-count span { color:#fff; font-weight:600; }
+    .redes-required { font-size:11px; color:var(--err); display:none; }
+
+    /* ── RESUMEN ── */
+    .res-card {
+      background: var(--s1);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .res-hero {
+      height: 80px;
+      background: var(--s2);
+      position: relative;
+      background-size:cover; background-position:center;
+    }
+    .res-hero::after { content:''; position:absolute; inset:0; background:rgba(0,0,0,.35); }
+    .res-av {
+      width: 58px; height: 58px;
+      border-radius: 50%;
+      border: 3px solid var(--bg);
+      position: absolute; bottom:-29px; left: 20px;
+      object-fit:cover; z-index:1;
+    }
+    .res-body { padding: 36px 20px 20px; }
+    .res-nombre { font-family:'Inter',sans-serif; font-size:18px; font-weight:800; }
+    .res-user { font-size:12px; color:var(--muted2); margin-top:2px; }
+    .res-bio { font-size:12px; color:rgba(255,255,255,.55); margin-top:9px; line-height:1.6; }
+    .res-tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:10px; }
+    .res-tag {
+      background:var(--s2); border:1px solid var(--border);
+      border-radius:20px; padding:2px 9px;
+      font-size:10px; color:rgba(255,255,255,.45);
+    }
+    .res-tipo {
+      display:inline-flex; align-items:center; gap:4px;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--b2);
+      border-radius:20px; padding:3px 10px;
+      font-size:10px; font-weight:600; margin-top:9px;
+    }
+    .res-redes { display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+    .res-red { font-size:10px; color:var(--muted2); display:flex; align-items:center; gap:4px; }
+
+    /* ── NAV ── */
+    .nav {
+      display:flex; justify-content:space-between; align-items:center;
+      padding-top: 4px;
+    }
+
+    .btn-back {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 10px 20px;
+      color: var(--muted2);
+      font-size: 12px; font-weight:500;
+      cursor:pointer;
+      font-family:'Inter',sans-serif;
+      transition: all .2s;
+      display: flex; align-items:center; gap:6px;
+    }
+    .btn-back:hover { border-color:var(--b2); color:#fff; }
+
+    .btn-next {
+      background: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 11px 26px;
+      color: #000;
+      font-size: 13px; font-weight:700;
+      cursor:pointer;
+      font-family:'Inter',sans-serif;
+      transition: all .2s;
+      display: flex; align-items:center; gap:7px;
+    }
+    .btn-next:hover { background:#ebebeb; transform:translateY(-1px); }
+    .btn-next:active { transform:scale(.97); }
+    .btn-next:disabled { background:#1a1a1a; color:var(--muted); cursor:not-allowed; transform:none; }
+
+    /* ── ANIMACIONES ── */
+    @keyframes shake {
+      0%,100% { transform:translateX(0); }
+      20%      { transform:translateX(-5px); }
+      60%      { transform:translateX(5px); }
+    }
+    .shake { animation: shake .3s ease; }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:768px) {
+      .left { display:none; }
+      .right { padding: 28px 20px; justify-content:flex-start; padding-top: 48px; }
+    }
+  </style>
+</head>
+
+<body>
+<div class="wrap">
+
+  <aside class="left">
+    <div class="left-logo"><img src="/img/logo sk.png" alt="Sneak" onerror="this.src='/img/Logo SK.gif'"></div>
+    <nav class="steps" id="steps-nav">
+      <div class="s-item on" data-i="0">
+        <div class="s-num"><span>1</span></div><span class="s-label">Foto y nombre</span>
+      </div>
+      <div class="s-item" data-i="1">
+        <div class="s-num"><span>2</span></div><span class="s-label">Tu perfil</span>
+      </div>
+      <div class="s-item" data-i="2">
+        <div class="s-num"><span>3</span></div><span class="s-label">Tipo de cuenta</span>
+      </div>
+      <div class="s-item" data-i="3">
+        <div class="s-num"><span>4</span></div><span class="s-label">Géneros</span>
+      </div>
+      <div class="s-item" data-i="4">
+        <div class="s-num"><span>5</span></div><span class="s-label">Redes sociales</span>
+      </div>
+      <div class="s-item" data-i="5">
+        <div class="s-num"><span>6</span></div><span class="s-label">Confirmar</span>
+      </div>
+    </nav>
+    <p class="left-foot">Puedes editar todo esto<br>en tu perfil cuando quieras.</p>
+  </aside>
+
+  <main class="right">
+    <div class="prog-bar">
+      <div class="prog-fill" id="prog" style="width:16.6%"></div>
+    </div>
+
+    <div class="panel on" id="p0">
+      <span class="step-tag">Paso 1 · 6</span>
+      <h2 class="step-h">Ponle cara<br>a tu perfil</h2>
+      <p class="step-sub">Sube una foto y elige tu nombre. La foto es obligatoria.</p>
+
+      <div class="foto-wrap">
+        <div class="foto-circle" id="foto-circle" onclick="document.getElementById('inp-foto').click()">
+          <i class="fas fa-camera" id="foto-ico"></i>
+          <img id="foto-prev" alt="">
+        </div>
+        <input type="file" id="inp-foto" accept="image/*" style="display:none">
+        <div class="foto-info">
+          <strong>Foto de perfil</strong>
+          <span class="foto-hint">JPG o PNG · Máx 3MB</span>
+          <button class="btn-foto" onclick="document.getElementById('inp-foto').click()">
+            <i class="fas fa-upload" style="margin-right:5px"></i>Subir foto
+          </button>
+          <span class="err-msg" id="err-foto">La foto de perfil es obligatoria</span>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Nombre completo *</label>
+        <input type="text" id="f-nombre" placeholder="Ej: Naxof Producciones" maxlength="50">
+        <span class="err-msg" id="err-nombre">El nombre es obligatorio</span>
+      </div>
+
+      <div class="campo">
+        <label>Nombre de usuario *</label>
+        <div class="campo-prefix">
+          <span>@</span>
+          <input type="text" id="f-username" placeholder="naxof_44" maxlength="30">
+        </div>
+        <span class="err-msg" id="err-username">El nombre de usuario es obligatorio</span>
+      </div>
+
+      <div class="nav">
+        <span></span>
+        <button class="btn-next" onclick="sig()">Continuar <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <div class="panel" id="p1">
+      <span class="step-tag">Paso 2 · 6</span>
+      <h2 class="step-h">Cuéntanos<br>sobre ti</h2>
+      <p class="step-sub">Una bio y tu ubicación son obligatorias.</p>
+
+      <div class="campo">
+        <label>Biografía *</label>
+        <textarea id="f-bio" rows="4" placeholder="Productora de música electrónica desde 2018..." maxlength="180"
+          oninput="document.getElementById('bio-c').textContent=this.value.length+'/180'"></textarea>
+        <span class="char-count" id="bio-c">0/180</span>
+        <span class="err-msg" id="err-bio">La biografía es obligatoria</span>
+      </div>
+
+      <div class="campo">
+        <label>País / Ciudad *</label>
+        <input type="text" id="f-ubicacion" placeholder="Ej: Madrid, España">
+        <span class="err-msg" id="err-ubic">La ubicación es obligatoria</span>
+      </div>
+
+      <div class="campo">
+        <label>Sitio web <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
+        <input type="url" id="f-web" placeholder="https://tuwebsite.com">
+      </div>
+
+      <div class="nav">
+        <button class="btn-back" onclick="ant()"><i class="fas fa-arrow-left"></i> Atrás</button>
+        <button class="btn-next" onclick="sig()">Continuar <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <div class="panel" id="p2">
+      <span class="step-tag">Paso 3 · 6</span>
+      <h2 class="step-h">¿Cómo describes<br>tu rol?</h2>
+      <p class="step-sub">Selecciona al menos uno. Puede ser más de uno.</p>
+      <span class="tipo-required" id="err-tipo">Selecciona al menos un rol</span>
+
+      <div class="tipo-grid">
+        <div class="tipo-card" data-t="Artista" onclick="togTipo(this)">
+          <div class="tipo-ico"><i class="fas fa-microphone"></i></div>
+          <h3>Artista</h3><p>Cantas, rapeas o interpretas.</p>
+        </div>
+        <div class="tipo-card" data-t="Productor" onclick="togTipo(this)">
+          <div class="tipo-ico"><i class="fas fa-sliders-h"></i></div>
+          <h3>Productor</h3><p>Creas beats e instrumentales.</p>
+        </div>
+        <div class="tipo-card" data-t="DJ" onclick="togTipo(this)">
+          <div class="tipo-ico"><i class="fas fa-compact-disc"></i></div>
+          <h3>DJ</h3><p>Mezclas y tocas sets en directo.</p>
+        </div>
+        <div class="tipo-card" data-t="Compositor" onclick="togTipo(this)">
+          <div class="tipo-ico"><i class="fas fa-pen-nib"></i></div>
+          <h3>Compositor</h3><p>Escribes letras y compones.</p>
+        </div>
+        <div class="tipo-card" data-t="Ingeniero" onclick="togTipo(this)">
+          <div class="tipo-ico"><i class="fas fa-headphones"></i></div>
+          <h3>Ingeniero de sonido</h3><p>Mezclas y masteras.</p>
+        </div>
+        <div class="tipo-card" data-t="Oyente" onclick="togTipo(this)">
+          <div class="tipo-ico"><i class="fas fa-music"></i></div>
+          <h3>Oyente</h3><p>Descubres y disfrutas música.</p>
+        </div>
+      </div>
+
+      <div class="nav">
+        <button class="btn-back" onclick="ant()"><i class="fas fa-arrow-left"></i> Atrás</button>
+        <button class="btn-next" onclick="sig()">Continuar <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <div class="panel" id="p3">
+      <span class="step-tag">Paso 4 · 6</span>
+      <h2 class="step-h">¿Qué música<br>te define?</h2>
+      <p class="step-sub">Elige entre 1 y 5 géneros. Obligatorio.</p>
+      <span class="gen-required" id="err-gen">Selecciona al menos un género</span>
+      <div class="gen-grid" id="gen-grid"></div>
+      <span class="gen-hint" id="gen-hint">0 / 5 seleccionados</span>
+      <div class="nav">
+        <button class="btn-back" onclick="ant()"><i class="fas fa-arrow-left"></i> Atrás</button>
+        <button class="btn-next" onclick="sig()">Continuar <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <div class="panel" id="p4">
+      <span class="step-tag">Paso 5 · 6</span>
+      <h2 class="step-h">Conecta<br>tus redes</h2>
+      <p class="step-sub">Mínimo 3 redes sociales son obligatorias.</p>
+
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="redes-count">Rellenadas: <span id="redes-n">0</span> / 5</span>
+        <span class="redes-required" id="err-redes">Rellena al menos 3 redes</span>
+      </div>
+
+      <div class="redes-list">
+        <div class="red-row" id="rr-ig">
+          <div class="red-ico"><i class="fab fa-instagram"></i></div>
+          <input type="text" id="r-ig" placeholder="@tuusuario en Instagram" oninput="onRed('rr-ig','r-ig')">
+          <i class="fas fa-check red-check"></i>
+        </div>
+        <div class="red-row" id="rr-tt">
+          <div class="red-ico"><i class="fab fa-tiktok"></i></div>
+          <input type="text" id="r-tt" placeholder="@tuusuario en TikTok" oninput="onRed('rr-tt','r-tt')">
+          <i class="fas fa-check red-check"></i>
+        </div>
+        <div class="red-row" id="rr-yt">
+          <div class="red-ico"><i class="fab fa-youtube"></i></div>
+          <input type="url" id="r-yt" placeholder="youtube.com/@canal" oninput="onRed('rr-yt','r-yt')">
+          <i class="fas fa-check red-check"></i>
+        </div>
+        <div class="red-row" id="rr-sp">
+          <div class="red-ico"><i class="fab fa-spotify"></i></div>
+          <input type="url" id="r-sp" placeholder="open.spotify.com/artist/..." oninput="onRed('rr-sp','r-sp')">
+          <i class="fas fa-check red-check"></i>
+        </div>
+        <div class="red-row" id="rr-sc">
+          <div class="red-ico"><i class="fab fa-soundcloud"></i></div>
+          <input type="url" id="r-sc" placeholder="soundcloud.com/..." oninput="onRed('rr-sc','r-sc')">
+          <i class="fas fa-check red-check"></i>
+        </div>
+      </div>
+
+      <div class="nav">
+        <button class="btn-back" onclick="ant()"><i class="fas fa-arrow-left"></i> Atrás</button>
+        <button class="btn-next" onclick="sig()">Continuar <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <div class="panel" id="p5">
+      <span class="step-tag">Paso 6 · 6</span>
+      <h2 class="step-h">¡Todo listo!</h2>
+      <p class="step-sub">Así se verá tu perfil en Sneak Studio.</p>
+
+      <div class="res-card">
+        <div class="res-hero" id="res-hero">
+          <img class="res-av" id="res-av" src="/img/porfile.jpeg" alt="">
+        </div>
+        <div class="res-body">
+          <p class="res-nombre" id="res-nombre">Tu nombre</p>
+          <p class="res-user" id="res-user">@usuario</p>
+          <p class="res-bio" id="res-bio"></p>
+          <div class="res-tags" id="res-gens"></div>
+          <div class="res-tipo" id="res-tipo"></div>
+          <div class="res-redes" id="res-redes"></div>
+        </div>
+      </div>
+
+      <div class="nav">
+        <button class="btn-back" onclick="ant()"><i class="fas fa-arrow-left"></i> Atrás</button>
+        <button class="btn-next" id="btn-fin" onclick="finalizar()">
+          Entrar a Sneak <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  
+
+  (function() {
+    const u = JSON.parse(localStorage.getItem('sneak_user') || 'null');
+    const _fromPerfil = new URLSearchParams(location.search).get('from') === 'perfil';
+    if (!u) { window.location.replace('/login'); return; }
+    if (u.onboarding === true && !_fromPerfil) { window.location.replace('/inicio'); return; }
+  })();
+
+  
+
+  const SUPA_URL = 'https://zhaskmfehdihtbnofhrw.supabase.co';
+  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpoYXNrbWZlaGRpaHRibm9maHJ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1Nzc1NzAsImV4cCI6MjA4OTE1MzU3MH0.R99YzAX0K2r3Nrn1YGt0FrJLtCnH4Iqb-V547jFKeM0';
+  const BUCKET = 'sneak-media';
+
+  async function subirFotoSupabase(file) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    const nombre = `avatars/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    const res = await fetch(`${SUPA_URL}/storage/v1/object/${BUCKET}/${nombre}`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${SUPA_KEY}`, 'Content-Type': file.type||'image/jpeg', 'x-upsert':'true' },
+      body: file,
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return `${SUPA_URL}/storage/v1/object/public/${BUCKET}/${nombre}`;
+  }
+
+  
+
+  const TOTAL = 6;
+  let paso = 0;
+  let P = { foto:'', nombre:'', username:'', bio:'', ubicacion:'', web:'', tipos:[], generos:[], redes:{} };
+
+  
+
+  const GENS = ['Pop','Hip-Hop','Electrónica','Rock','Jazz','R&B','Soul','Funk',
+    'Reggaeton','Trap','Drill','Phonk','Lo-fi','House','Techno','Ambient',
+    'Metal','Indie','Folk','Salsa','Bachata','Afrobeats','K-Pop','Clásica',
+    'Flamenco','Bossa Nova','Country','Cumbia','Punk'];
+
+  const gGrid = document.getElementById('gen-grid');
+  GENS.forEach(g => {
+    const d = document.createElement('div');
+    d.className = 'gen-pill'; d.textContent = g;
+    d.onclick = () => {
+      if (d.classList.contains('sel')) {
+        d.classList.remove('sel'); P.generos = P.generos.filter(x => x !== g);
+      } else {
+        if (P.generos.length >= 5) return;
+        d.classList.add('sel'); P.generos.push(g);
+      }
+      document.getElementById('gen-hint').textContent = P.generos.length + ' / 5 seleccionados';
+    };
+    gGrid.appendChild(d);
+  });
+
+  
+
+  function togTipo(card) {
+    const t = card.dataset.t;
+    card.classList.toggle('sel');
+    if (card.classList.contains('sel')) P.tipos.push(t);
+    else P.tipos = P.tipos.filter(x => x !== t);
+  }
+
+  
+
+  let _fotoFile = null;
+
+  document.getElementById('inp-foto').addEventListener('change', e => {
+    const f = e.target.files[0]; if (!f) return;
+    _fotoFile = f;
+    const r = new FileReader();
+    r.onload = ev => {
+      P.foto = ev.target.result;
+      const img = document.getElementById('foto-prev');
+      img.src = ev.target.result; img.style.display = 'block';
+      document.getElementById('foto-ico').style.display = 'none';
+      document.getElementById('err-foto').style.display = 'none';
+      document.getElementById('foto-circle').style.borderStyle = 'solid';
+    };
+    r.readAsDataURL(f);
+  });
+
+  
+
+  const REDS = [
+    {row:'rr-ig',inp:'r-ig'},{row:'rr-tt',inp:'r-tt'},
+    {row:'rr-yt',inp:'r-yt'},{row:'rr-sp',inp:'r-sp'},{row:'rr-sc',inp:'r-sc'},
+  ];
+
+  function onRed(rowId, inpId) {
+    const row = document.getElementById(rowId);
+    const val = document.getElementById(inpId).value.trim();
+    row.classList.toggle('filled', val.length > 0);
+    row.classList.remove('error-red');
+    const n = REDS.filter(r => document.getElementById(r.inp).value.trim()).length;
+    document.getElementById('redes-n').textContent = n;
+    if (n >= 3) document.getElementById('err-redes').style.display = 'none';
+  }
+
+  
+
+  function validar() {
+    let ok = true;
+    if (paso === 0) {
+      if (!P.foto) { show('err-foto'); shake('foto-circle'); ok = false; }
+      const nom = document.getElementById('f-nombre').value.trim();
+      if (!nom) { show('err-nombre'); shake('f-nombre'); ok = false; } else { P.nombre = nom; hide('err-nombre'); }
+      const usr = document.getElementById('f-username').value.trim();
+      if (!usr) { show('err-username'); shake('f-username'); ok = false; } else { P.username = usr; hide('err-username'); }
+    }
+    if (paso === 1) {
+      const bio = document.getElementById('f-bio').value.trim();
+      if (!bio) { show('err-bio'); shake('f-bio'); ok = false; } else { P.bio = bio; hide('err-bio'); }
+      const ubic = document.getElementById('f-ubicacion').value.trim();
+      if (!ubic) { show('err-ubic'); shake('f-ubicacion'); ok = false; } else { P.ubicacion = ubic; hide('err-ubic'); }
+      P.web = document.getElementById('f-web').value.trim();
+    }
+    if (paso === 2) {
+      if (!P.tipos.length) { show('err-tipo'); ok = false; } else hide('err-tipo');
+    }
+    if (paso === 3) {
+      if (!P.generos.length) { show('err-gen'); ok = false; } else hide('err-gen');
+    }
+    if (paso === 4) {
+      const n = REDS.filter(r => document.getElementById(r.inp).value.trim()).length;
+      if (n < 3) {
+        show('err-redes');
+        REDS.forEach(r => { if (!document.getElementById(r.inp).value.trim()) document.getElementById(r.row).classList.add('error-red'); });
+        ok = false;
+      } else {
+        hide('err-redes');
+        P.redes = {
+          instagram: document.getElementById('r-ig').value.trim(),
+          tiktok:    document.getElementById('r-tt').value.trim(),
+          youtube:   document.getElementById('r-yt').value.trim(),
+          spotify:   document.getElementById('r-sp').value.trim(),
+          soundcloud:document.getElementById('r-sc').value.trim(),
+        };
+      }
+    }
+    return ok;
+  }
+
+  
+
+  function sig() { if (!validar()) return; if (paso === 4) renderResumen(); irA(paso + 1); }
+  function ant() { irA(paso - 1); }
+
+  function irA(n) {
+    if (n < 0 || n >= TOTAL) return;
+    const panelActual = document.getElementById('p' + paso);
+    panelActual.classList.add('out');
+    setTimeout(() => {
+      panelActual.classList.remove('on', 'out');
+      paso = n;
+      const panelNuevo = document.getElementById('p' + paso);
+      panelNuevo.classList.add('on');
+      document.querySelectorAll('.s-item').forEach((it, i) => {
+        it.classList.remove('on', 'done');
+        if (i === n) it.classList.add('on');
+        if (i < n) it.classList.add('done');
+      });
+      document.getElementById('prog').style.width = ((n + 1) / TOTAL * 100) + '%';
+      document.querySelector('.right').scrollTop = 0;
+    }, 280);
+  }
+
+  
+
+  function renderResumen() {
+    const foto = P.foto || '/img/porfile.jpeg';
+    const hero = document.getElementById('res-hero');
+    hero.style.backgroundImage = `url(${foto})`;
+    document.getElementById('res-av').src = foto;
+    document.getElementById('res-nombre').textContent = P.nombre;
+    document.getElementById('res-user').textContent = '@' + P.username;
+    document.getElementById('res-bio').textContent = P.bio;
+    document.getElementById('res-gens').innerHTML = P.generos.map(g => `<span class="res-tag">${g}</span>`).join('');
+    document.getElementById('res-tipo').textContent = P.tipos.join(' · ') || 'Oyente';
+    const iconos = { instagram:'fab fa-instagram', tiktok:'fab fa-tiktok', youtube:'fab fa-youtube', spotify:'fab fa-spotify', soundcloud:'fab fa-soundcloud' };
+    document.getElementById('res-redes').innerHTML = Object.entries(P.redes).filter(([,v])=>v)
+      .map(([k,v]) => `<span class="res-red"><i class="${iconos[k]||'fas fa-link'}"></i> ${v}</span>`).join('');
+  }
+
+  
+
+  async function finalizar() {
+    const btn = document.getElementById('btn-fin');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+    btn.disabled = true;
+
+    const user = JSON.parse(localStorage.getItem('sneak_user') || '{}');
+    let fotoURL = user.foto && !user.foto.startsWith('data:') ? user.foto : null;
+
+    if (_fotoFile) {
+      try {
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subiendo foto...';
+        fotoURL = await subirFotoSupabase(_fotoFile);
+      } catch (e) { console.warn('Foto Supabase:', e.message); }
+    }
+
+    const perfilCompleto = {
+      ...user,
+      nombre: P.nombre, username: P.username, foto: fotoURL,
+      bio: P.bio, ubicacion: P.ubicacion, web: P.web,
+      tipos: P.tipos, generos: P.generos, redes: P.redes,
+      onboarding: true,
+    };
+
+    localStorage.setItem('sneak_user', JSON.stringify(perfilCompleto));
+
+    if (perfilCompleto.uid) {
+      try {
+        const mod = await import('/js/firebase-auth.js');
+        await mod.guardarPerfilFirestore(perfilCompleto.uid, perfilCompleto);
+      } catch (e) { console.warn('Firestore:', e); }
+    }
+
+    const fromPerfil = new URLSearchParams(location.search).get('from') === 'perfil'
+      || document.referrer.includes('/perfil');
+    window.location.href = fromPerfil ? '/perfil' : '/inicio';
+  }
+
+  
+
+  function show(id) { document.getElementById(id).style.display = 'block'; }
+  function hide(id) { document.getElementById(id).style.display = 'none'; }
+  function shake(id) {
+    const el = document.getElementById(id);
+    el.classList.add('shake');
+    setTimeout(() => el.classList.remove('shake'), 400);
+  }
+
+  
+
+  (function() {
+    const u = JSON.parse(localStorage.getItem('sneak_user') || '{}');
+    if (u.nombre) document.getElementById('f-nombre').value = u.nombre;
+    if (u.username) document.getElementById('f-username').value = u.username;
+    if (u.foto && !u.foto.startsWith('data:')) {
+      P.foto = u.foto;
+      document.getElementById('foto-prev').src = u.foto;
+      document.getElementById('foto-prev').style.display = 'block';
+      document.getElementById('foto-ico').style.display = 'none';
+    }
+    if (u.bio) document.getElementById('f-bio').value = u.bio;
+    if (u.ubicacion) document.getElementById('f-ubicacion').value = u.ubicacion;
+    if (u.web) document.getElementById('f-web').value = u.web;
+    if (u.redes) {
+      if (u.redes.instagram) { document.getElementById('r-ig').value = u.redes.instagram; onRed('rr-ig','r-ig'); }
+      if (u.redes.tiktok)    { document.getElementById('r-tt').value = u.redes.tiktok;    onRed('rr-tt','r-tt'); }
+      if (u.redes.youtube)   { document.getElementById('r-yt').value = u.redes.youtube;   onRed('rr-yt','r-yt'); }
+      if (u.redes.spotify)   { document.getElementById('r-sp').value = u.redes.spotify;   onRed('rr-sp','r-sp'); }
+      if (u.redes.soundcloud){ document.getElementById('r-sc').value = u.redes.soundcloud;onRed('rr-sc','r-sc'); }
+    }
+    if (u.tipos?.length) {
+      u.tipos.forEach(t => {
+        const card = document.querySelector(`[data-t="${t}"]`);
+        if (card) { card.classList.add('sel'); P.tipos.push(t); }
+      });
+    }
+    if (u.generos?.length) {
+      u.generos.forEach(g => {
+        const pill = [...document.querySelectorAll('.gen-pill')].find(p => p.textContent === g);
+        if (pill) { pill.classList.add('sel'); P.generos.push(g); }
+      });
+      document.getElementById('gen-hint').textContent = P.generos.length + ' / 5 seleccionados';
+    }
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+# ── Entorno (¡CRÍTICO: nunca subir!) ─────────────────────────
+.env
+.env.local
+.env.production
+
+# ── Dependencias ──────────────────────────────────────────────
+node_modules/
+
+# ── Logs ──────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+logs/
+
+# ── Sistema operativo ─────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Editor ────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+
+# ── Build / compilación ───────────────────────────────────────
+dist/
+build/
+
+# ── Archivos temporales ───────────────────────────────────────
+*.tmp
+*.temp
+public/videos/

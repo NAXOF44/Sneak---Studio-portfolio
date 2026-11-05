@@ -1,0 +1,45 @@
+#sneak-loader {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #000000;
+    z-index: 9999;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+}
+
+ 
+.loader-logo {
+    width: 100px;  
+    height: auto;  
+    margin-bottom: 20px;
+    animation: pulse-sneak 2s infinite ease-in-out;
+    object-fit: contain;  
+}
+
+@keyframes pulse-sneak {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.05); opacity: 1; }
+}
+
+.progress-container {
+    width: 150px;  
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #ffffff;
+    transition: width 0.4s ease-out;
+}
+
+.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}

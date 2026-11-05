@@ -1,0 +1,360 @@
+:root {
+    --bg: #000;
+    --card: #0f0f0f;
+    --border: #222;
+    --input: #141414;
+    --muted: #777;
+    --white: #fff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg);
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    color: var(--white);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+.auth-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 620px;
+    height: auto;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .8);
+}
+
+ 
+.auth-image,
+.auth-image-video {
+    width: 200px;
+    min-width: 200px;
+    position: relative;
+    background: #111;
+    flex-shrink: 0;
+}
+
+.auth-image img.main-img,
+.auth-image-video video.main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: .55;
+}
+
+.auth-image::after,
+.auth-image-video::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgb(254, 66, 9), rgba(70, 6, 6, .7));
+}
+
+.overlay-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.overlay-logo img {
+    width: 90px;
+    opacity: .95;
+}
+
+ 
+.auth-form {
+    flex: 1;
+    padding: 22px 22px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 14px;
+}
+
+.auth-header h1 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+
+.auth-header p {
+    font-size: 11px;
+    color: var(--muted);
+}
+
+ 
+.social-grid {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.social-btn {
+    flex: 1;
+    padding: 7px 8px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: #1a1a1a;
+    color: var(--white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    transition: background .2s;
+    white-space: nowrap;
+}
+
+.social-btn:hover {
+    background: #242424;
+}
+
+.social-btn img {
+    width: 13px;
+}
+
+ 
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 10px;
+    margin-bottom: 12px;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+ 
+.form-group {
+    margin-bottom: 9px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px 10px;
+    background: var(--input);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--white);
+    font-size: 12px;
+    transition: border-color .2s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #444;
+}
+
+.form-group input::placeholder {
+    color: #555;
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.icon-eye-off {
+    display: none;
+}
+
+.toggle-password.active .icon-eye {
+    display: none;
+}
+
+.toggle-password.active .icon-eye-off {
+    display: block;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    margin-bottom: 12px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--muted);
+}
+
+.remember-me input {
+    accent-color: white;
+}
+
+.forgot-link {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 11px;
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
+}
+
+ 
+.submit-btn {
+    width: 100%;
+    padding: 9px;
+    background: var(--white);
+    color: #000;
+    border: none;
+    border-radius: 7px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: opacity .2s, transform .15s;
+}
+
+.submit-btn:hover {
+    opacity: .88;
+    transform: translateY(-1px);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+ 
+.auth-footer {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.auth-footer a {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+ 
+.toast {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 7px;
+    font-size: 12px;
+    opacity: 0;
+    transition: all .3s;
+    z-index: 9999;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+ 
+@media (max-width: 560px) {
+    body {
+        padding: 0;
+        align-items: stretch;
+    }
+
+    .auth-wrapper {
+        border-radius: 0;
+        border: none;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .auth-image,
+    .auth-image-video {
+        width: 100%;
+        min-width: unset;
+        height: 110px;
+    }
+
+    .overlay-logo img {
+        width: 70px;
+    }
+
+    .auth-form {
+        padding: 18px 16px;
+        justify-content: flex-start;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body {
+    animation: fadeIn .4s ease both;
+}

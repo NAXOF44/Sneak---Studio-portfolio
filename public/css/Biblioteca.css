@@ -1,0 +1,486 @@
+@font-face {
+  font-family: 'sneak';
+  src: url('/fonts/sneak.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+a {
+  text-decoration: none;
+}
+ 
+.estadis-bib {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: -10px;
+  margin-bottom: 30px;
+}
+
+.Proyec-bi,
+.Proyec-bib {
+  border-radius: 10px;
+  padding: 10px 16px;
+  min-width: 130px;
+  flex: 1 1 130px;
+  max-width: 240px;
+  height: auto;
+  min-height: 80px;
+}
+
+.Proyec-bib { background-color: rgb(249, 65, 28); }
+.Proyec-bi  { background-color: rgb(33, 33, 33);  }
+
+.creaciones-bib p {
+  color: #fff;
+  font-size: 11px;
+  margin: 0;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+.canti-proyect h1 {
+  font-size: clamp(30px, 4vw, 50px);
+  margin-left: 10px;
+  margin-top: 6px;
+  line-height: 1;
+}
+
+ 
+.likes-music {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  background-color: #ffffff;
+  width: 100%;
+  min-height: 160px;
+  border-radius: 10px;
+  color: #000;
+  padding: 16px;
+  box-sizing: border-box;
+  margin-bottom: 30px;
+}
+
+.img-likes img {
+  width: clamp(160px, 20vw, 300px);
+  height: clamp(120px, 15vw, 200px);
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+
+.list-text {
+  flex: 1 1 200px;
+  min-width: 0;
+  padding-top: 6px;
+}
+
+.info-text-likes h1 {
+  font-size: clamp(20px, 3.5vw, 50px);
+
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.expli-lis {
+  max-width: 500px;
+}
+
+.expli-lis p {
+  opacity: 80%;
+  font-size: clamp(12px, 1.3vw, 15px);
+}
+
+.porfile-list {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.img-perfil-list img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: solid 1px #000;
+}
+
+.list-name-and-list {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.name a {
+  text-decoration: none;
+  color: #000;
+  font-size: 13px;
+}
+
+.lista { opacity: 50%; font-size: 13px; }
+
+.punto {
+  font-size: 28px;
+  line-height: 1;
+  position: relative;
+  top: -7px;
+}
+
+ 
+.bibli-favo,
+.bibli-favo-sensillos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  margin-bottom: 6px;
+  margin-top: 10px;
+}
+
+.tit-favo h1,
+.tit-favo-sensillos h1 {
+  margin-bottom: 20px;
+  font-size: clamp(18px, 2.5vw, 26px);
+}
+
+.most-mas,
+.most-mas-sensillos {
+  opacity: 50%;
+  transition: opacity 0.2s;
+}
+
+.most-mas:hover,
+.most-mas-sensillos:hover { opacity: 100%; }
+
+.most-mas a,
+.most-mas-sensillos a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 13px;
+}
+
+ 
+.listas-biblioteca {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.lista-bib {
+  border-radius: 10px;
+  padding: 12px;
+  flex: 1 1 200px;
+  max-width: 260px;
+  min-width: 150px;
+  transition: background-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.lista-bib:hover { background: #4747474b; }
+.lista-bib a     { text-decoration: none; }
+
+.img-lista img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+
+.tit-list h1 {
+  color: #fff;
+  font-weight: 500;
+  font-size: clamp(13px, 1.5vw, 20px);
+  margin-top: 6px;
+}
+
+.discripcion-lista p {
+  color: rgb(212, 212, 212);
+  font-size: 11px;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+ 
+.listas-artist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.lista-bib-artist {
+  border-radius: 10px;
+  padding: 15px 20px;
+  flex: 1 1 180px;
+  max-width: 290px;
+  min-width: 190px;
+  transition: background-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.lista-bib-artist:hover { background: #5e5e5e5a; }
+
+.img-lista-artist img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.tit-list-artist h1 {
+  color: #fff;
+  font-weight: 500;
+  font-size: clamp(13px, 1.5vw, 20px);
+  margin-top: 6px;
+  text-align: center;
+}
+
+.discripcion-lista-artist p {
+  color: rgb(212, 212, 212);
+  font-size: 11px;
+  margin-top: 4px;
+  text-align: center;
+}
+
+ 
+.list-album {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.lista-bib-albumes {
+  border-radius: 10px;
+  padding: 12px;
+  flex: 1 1 180px;
+  max-width: 250px;
+  min-width: 140px;
+  transition: background-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.lista-bib-albumes:hover { background: #5e5e5e5a; }
+
+.img-lista-albumes img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+  transition: box-shadow 0.3s;
+}
+
+.img-lista-albumes img:hover { box-shadow: 0 5px 12px rgba(0,0,0,0.35); }
+
+.tit-list-albumes h1 {
+  color: #fff;
+  font-weight: 500;
+  font-size: clamp(13px, 1.5vw, 20px);
+  margin-top: 6px;
+}
+
+.discripcion-lista-albumes {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.discripcion-lista-albumes a { text-decoration: none; }
+
+.discripcion-lista-albumes p,
+.name-artist-album a p {
+  color: rgba(212,212,212,0.85);
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.name-artist-album { display: flex; }
+
+.punto-album p {
+  color: rgba(255,255,255,0.35);
+  font-size: 32px;
+  line-height: 1;
+  position: relative;
+}
+
+ 
+.list-sensillo44 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.lista-bib-sensillos {
+  border-radius: 10px;
+  padding: 10px;
+  flex: 1 1 150px;
+  max-width: 200px;
+  min-width: 120px;
+  transition: background-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.lista-bib-sensillos:hover { background-color: #58585843; }
+
+.img-lista-sensillos img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+
+.tit-list-sensillos h1 {
+  font-size: clamp(12px, 1.3vw, 15px);
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+.discripcion-lista-sensillos p {
+  font-size: 10px;
+  color: rgba(255,255,255,0.7);
+  margin-top: 3px;
+}
+
+.discripcion-lista-sensillos a { text-decoration: none; }
+
+ 
+
+ 
+.explorar-btn {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  margin-bottom: 50px;
+}
+
+.explorar-btn button {
+  background-color: #ffffff;
+  border: none;
+  padding: 14px 40px;
+  width: clamp(160px, 30vw, 220px);
+  border-radius: 90px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.explorar-btn button:hover { opacity: 0.85; }
+
+ 
+.contenido {
+  width: 100%;
+  padding: 20px 24px 0;
+  box-sizing: border-box;
+}
+
+ 
+@media (max-width: 1024px) {
+  .estadis-bib { gap: 10px; }
+
+  .Proyec-bi,
+  .Proyec-bib  { flex: 1 1 120px; max-width: 200px; }
+
+  .listas-biblioteca,
+  .listas-artist,
+  .list-album { gap: 8px; }
+
+  .lista-bib,
+  .lista-bib-artist,
+  .lista-bib-albumes { flex: 1 1 160px; max-width: 220px; }
+
+  .top3-day a { flex: 1 1 220px; }
+}
+
+ 
+@media (max-width: 768px) {
+  .contenido { padding: 16px 16px 0; }
+
+   
+  .estadis-bib { gap: 8px; }
+  .Proyec-bi,
+  .Proyec-bib  { flex: 1 1 calc(50% - 4px); max-width: 100%; }
+
+   
+  .likes-music { flex-direction: column; }
+  .img-likes img { width: 100%; height: 180px; }
+
+   
+  .listas-biblioteca,
+  .listas-artist,
+  .list-album { justify-content: flex-start; }
+
+  .lista-bib,
+  .lista-bib-artist,
+  .lista-bib-albumes { flex: 1 1 calc(50% - 8px); max-width: calc(50% - 8px); }
+
+   
+  .lista-bib-sensillos { flex: 1 1 calc(33.33% - 6px); max-width: calc(33.33% - 6px); }
+
+   
+  .top3-day { flex-direction: column; }
+  .top3-day a { flex: none; width: 100%; }
+
+   
+  .most-mas,
+  .most-mas-sensillos {
+    position: static;
+    left: unset;
+    top: unset;
+  }
+}
+
+ 
+@media (max-width: 480px) {
+  .contenido { padding: 12px 12px 0; }
+
+   
+  .Proyec-bi,
+  .Proyec-bib { flex: 1 1 calc(50% - 6px); }
+
+  .canti-proyect h1 { font-size: 30px; }
+
+   
+  .lista-bib,
+  .lista-bib-artist,
+  .lista-bib-albumes {
+    flex: 1 1 calc(50% - 6px);
+    max-width: calc(50% - 6px);
+    padding: 8px;
+  }
+
+   
+  .lista-bib-sensillos {
+    flex: 1 1 calc(50% - 6px);
+    max-width: calc(50% - 6px);
+  }
+
+  .info-text-likes h1 { font-size: 22px; }
+
+  .div-tit-top h1 { font-size: 28px; }
+
+  .btns-artist button { padding: 6px 12px; font-size: 11px; }
+
+  .explorar-btn button { width: 90%; max-width: 280px; }
+}
+
+ 
+@media (min-width: 1400px) {
+  .contenido { padding: 30px 40px 0; }
+
+  .lista-bib,
+  .lista-bib-artist,
+  .lista-bib-albumes { flex: 1 1 220px; max-width: 280px; }
+
+  .lista-bib-sensillos { flex: 1 1 180px; max-width: 210px; }
+
+  .top3-day a { flex: 1 1 300px; }
+}

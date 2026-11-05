@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/Buscar.css">
+    <link rel="stylesheet" href="/css/reglas.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/Bar-player.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="/favicon_io/favsk (6).svg">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <title>Sneak Studio — Explorar</title>
+</head>
+
+<body>
+
+    <section id="app" class="home-section">
+
+        <div class="busqueda">
+            <a href="/perfil" class="mobile-profile-btn">
+              <img src="/img/porfile.jpeg" alt="Perfil" id="mobile-foto">
+            </a>
+            <input id="exp-search-input" placeholder="Buscar canciones, artistas o listas…" type="search">
+            <div class="button1">
+                <button class="button" id="exp-search-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                    </svg>
+                    Buscar
+                </button>
+            </div>
+        </div>
+
+        <div id="exp-search-results" style="display:none">
+            <div class="for-you">
+                <h1 id="exp-search-title">Resultados</h1>
+            </div>
+            
+            <div id="exp-search-usuarios-wrap" style="display:none">
+                <p class="exp-search-subtitle">Artistas y usuarios</p>
+                <div class="List-artist-explo" id="exp-search-usuarios"></div>
+            </div>
+            
+            <div id="exp-search-canciones-wrap" style="display:none">
+                <p class="exp-search-subtitle" style="margin-butom: 20px;">Canciones y listas</p>
+                <div class="List-radio" id="exp-search-list"></div>
+            </div>
+        </div>
+
+        <div id="exp-sec-playlists">
+            <div class="for-you">
+                <h1>Artistas</h1>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="30" fill="currentColor"
+                    class="bi bi-chevron-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                </svg>
+            </div>
+            <div class="List-artist-explo" id="explo-artists"></div>
+            </div>
+
+            <style>
+
+                .List-artist-explo {
+                    display: flex;
+                    gap: 10px;
+                    overflow-x: auto;
+                    scroll-behavior: smooth;
+                    scrollbar-width: none;
+                    padding-bottom: 6px;
+                }
+                .List-artist-explo::-webkit-scrollbar { display: none; }
+
+                .artist-card {
+                    width: 230px;
+                    padding: 20px;
+                    border-radius: 15px;
+                    text-align: center;
+                    transition: transform 0.3s ease;
+                    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+                }
+
+                .artist-card:hover {
+                    background-color: #343434;
+                    color: #ffffff;
+                    /* Cambia el texto a blanco para que no se pierda */
+                }
+
+                .artist-image-container {
+                    width: 170px;
+                    height: 170px;
+                    margin: 0 auto 15px;
+                    overflow: hidden;
+                    border-radius: 50%;
+                    /* Círculo perfecto */
+                }
+
+                .artist-image-container img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    /* Evita que la imagen se deforme */
+                }
+
+                .artist-info h2 {
+                    font-size: 1.2rem;
+                    color: white;
+                    margin: 0;
+                    text-transform: capitalize;
+                }
+
+                .artist-info p {
+                    text-align: center;
+                }
+            </style>
+
+            <div id="exp-sec-listas">
+                <div class="for-you2">
+                    <h1>Explorar Listas</h1>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="30" fill="currentColor"
+                        class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                    </svg>
+                </div>
+                <div class="List-radio2" id="exp-listas"></div>
+            </div>
+
+            <div id="exp-sec-exitos">
+                <div class="for-you2">
+                    <h1>Super-Éxitos</h1>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="30" fill="currentColor"
+                        class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                    </svg>
+                </div>
+                <div class="List-radio3" id="exp-exitos"></div>
+            </div>
+
+            <div>
+                <div class="for-you3">
+                    <h1>Géneros</h1>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="30" fill="currentColor"
+                        class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                    </svg>
+                </div>
+                <div class="generos-grid" id="exp-generos">
+                    
+                </div>
+            </div>
+
+            <footer>
+                <div class="contenni-footer">
+                    <div class="prin-footer">
+                        <p>Use cases</p>
+                        <p>Resources</p>
+                        <p class="exp-foot">Explore</p>
+                        <div class="icons">
+                            <a href="https://www.instagram.com/"><i class="fa-brands fa-instagram"></i></a>
+                            <a href=""><i class="fa-brands fa-square-x-twitter"></i></a>
+                            <a href=""><i class="fa-brands fa-facebook"></i></a>
+                        </div>
+                    </div>
+                    <div class="opcion-footer">
+                        <div class="foot-1">
+                            <p>UI design</p>
+                            <p>UX design</p>
+                            <p>Wireframing</p>
+                            <p>Diagramming</p>
+                            <p>Brainstorming</p>
+                            <p>Online whiteboard</p>
+                            <p>Team collaboration</p>
+                        </div>
+                        <div class="foot-2">
+                            <p>Design</p>
+                            <p>Prototyping</p>
+                            <p>Development features</p>
+                            <p>Design systems</p>
+                            <p>Collaboration features</p>
+                            <p>Design process</p>
+                            <p>FigJam</p>
+                        </div>
+                        <div class="foot-3">
+                            <p>Blog</p>
+                            <p>Best practices</p>
+                            <p>Colors</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="derechos-footer">
+                    <a href="">
+                        <p>Política de privacidad</p>
+                    </a>
+                    <a href="">
+                        <p>Política de Cookies</p>
+                    </a>
+                    <a href="">
+                        <p>Aviso Legal</p>
+                    </a>
+                    <a href="">
+                        <p>Condiciones de Uso</p>
+                    </a>
+                    <a href="">
+                        <p>Seguridad y privacidad</p>
+                    </a>
+                </div>
+            </footer>
+    </section>
+      
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="/js/emailjs-config.js"></script>
+  <script src="/js/denuncia.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/player-global.js"></script>
+  <script type="module" src="/js/auth-guard.js"></script>
+    <script type="module" src="/js/explorar-dinamico.js"></script>
+  <script src="/js/scroll-buttons.js"></script>
+</body>
+
+</html>

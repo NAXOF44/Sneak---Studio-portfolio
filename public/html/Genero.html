@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Género — Sneak Studio</title>
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/footer.css">
+  <link rel="stylesheet" href="/css/reglas.css">
+  <link rel="stylesheet" href="/css/Bar-player.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/x-icon" href="/favicon_io/favsk (6).svg">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --bg: #080808;
+      --surface: rgba(255, 255, 255, .05);
+      --surface-hov: rgba(255, 255, 255, .09);
+      --border: rgba(255, 255, 255, .08);
+      --accent: #FF6200;
+      --muted: #555;
+      --muted2: #888;
+      --white: #fff;
+      --ease: .22s cubic-bezier(.4, 0, .2, 1)
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'DM Sans', 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      scrollbar-width: thin;
+      scrollbar-color: #1a1a1a transparent
+    }
+
+    .home-section {
+      margin-left: 240px;
+      width: calc(100% - 240px);
+      min-height: 100vh;
+      padding: 0 0 140px
+    }
+
+    /* ── HERO ── */
+    .genre-hero {
+      position: relative;
+      overflow: hidden;
+      height: clamp(220px, 30vw, 360px);
+      display: flex;
+      align-items: flex-end
+    }
+
+    .genre-hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      filter: brightness(.45) saturate(1.2)
+    }
+
+    .genre-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(8, 8, 8, 1) 0%, rgba(8, 8, 8, .3) 60%, transparent 100%)
+    }
+
+    .genre-hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 28px 32px;
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px
+    }
+
+    .genre-hero-text h1 {
+      font-size: clamp(32px, 5vw, 60px);
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      line-height: 1
+    }
+
+    .genre-hero-text p {
+      font-size: 13px;
+      color: rgba(255, 255, 255, .6);
+      margin-top: 6px
+    }
+
+    .btn-play-genre {
+      background: var(--accent);
+      border: none;
+      color: #000;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 12px 28px;
+      border-radius: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform var(--ease), background var(--ease);
+      flex-shrink: 0;
+      white-space: nowrap
+    }
+
+    .btn-play-genre:hover {
+      background: #ff7a20;
+      transform: scale(1.03)
+    }
+
+    .btn-play-genre.playing {
+      background: rgba(255, 255, 255, .15);
+      color: var(--white)
+    }
+
+    /* ── Content ── */
+    .genre-content {
+      padding: 28px 32px
+    }
+
+    .sec-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px
+    }
+
+    .sec-header h2 {
+      font-size: 18px;
+      font-weight: 700
+    }
+
+    .sec-header a {
+      font-size: 12px;
+      color: var(--muted2);
+      text-decoration: none;
+      transition: color var(--ease)
+    }
+
+    .sec-header a:hover {
+      color: var(--white)
+    }
+
+    section.bloque {
+      margin-bottom: 36px
+    }
+
+    /* ── Song rows — Spotify style ── */
+    .song-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background var(--ease);
+      position: relative
+    }
+
+    .song-row:hover {
+      background: var(--surface-hov)
+    }
+
+    .song-row:hover .song-play {
+      opacity: 1
+    }
+
+    .song-row:hover .song-num {
+      opacity: 0
+    }
+
+    .song-num-wrap {
+      position: relative;
+      width: 24px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .song-num {
+      font-size: 13px;
+      color: var(--muted2);
+      transition: opacity .15s
+    }
+
+    .song-play {
+      position: absolute;
+      font-size: 12px;
+      color: var(--white);
+      opacity: 0;
+      transition: opacity .15s
+    }
+
+    .song-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: #1a1a1a;
+      flex-shrink: 0
+    }
+
+    .song-info {
+      flex: 1;
+      min-width: 0
+    }
+
+    .song-title {
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .song-title.playing-title {
+      color: var(--accent)
+    }
+
+    .song-artist {
+      font-size: 11px;
+      color: var(--muted2);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px
+    }
+
+    .song-artist img {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      object-fit: cover
+    }
+
+    .song-repros {
+      font-size: 12px;
+      color: var(--muted2);
+      flex-shrink: 0;
+      min-width: 52px;
+      text-align: right;
+      font-variant-numeric: tabular-nums
+    }
+
+    .song-like {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 14px;
+      cursor: pointer;
+      padding: 4px 8px;
+      flex-shrink: 0;
+      transition: color var(--ease), transform .15s
+    }
+
+    .song-like:hover {
+      color: #ff4466;
+      transform: scale(1.2)
+    }
+
+    .song-like.liked {
+      color: #ff4466
+    }
+
+    .show-more-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted2);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 8px 24px;
+      border-radius: 50px;
+      cursor: pointer;
+      display: block;
+      margin: 18px auto 0;
+      transition: all var(--ease)
+    }
+
+    .show-more-btn:hover {
+      border-color: rgba(255, 255, 255, .3);
+      color: var(--white)
+    }
+
+    /* ── Carrusel ── */
+    .carousel {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 8px
+    }
+
+    .carousel::-webkit-scrollbar {
+      display: none
+    }
+
+    .album-card {
+      flex: 0 0 auto;
+      width: clamp(140px, 16vw, 180px);
+      cursor: pointer;
+      transition: transform var(--ease)
+    }
+
+    .album-card:hover {
+      transform: translateY(-4px)
+    }
+
+    .album-thumb-wrap {
+      position: relative;
+      margin-bottom: 10px
+    }
+
+    .album-thumb-wrap img {
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+      transition: filter .2s
+    }
+
+    .album-card:hover .album-thumb-wrap img {
+      filter: brightness(.75)
+    }
+
+    .album-play-btn {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: var(--accent);
+      border: none;
+      color: #000;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity .2s, transform .2s;
+      font-size: 12px
+    }
+
+    .album-card:hover .album-play-btn {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .album-title {
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #fff;
+      margin-bottom: 3px
+    }
+
+    .album-meta {
+      font-size: 11px;
+      color: #666
+    }
+
+    .playlist-card {
+      flex: 0 0 auto;
+      width: clamp(220px, 28vw, 280px);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      transition: background var(--ease)
+    }
+
+    .playlist-card:hover {
+      background: var(--surface-hov)
+    }
+
+    .playlist-thumb {
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #1a1a1a
+    }
+
+    .playlist-info h3 {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 160px
+    }
+
+    .playlist-info p {
+      font-size: 11px;
+      color: var(--muted2);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden
+    }
+
+    @media(max-width:768px) {
+      .home-section {
+        margin-left: 0;
+        width: 100%
+      }
+
+      .genre-content {
+        padding: 16px
+      }
+
+      .genre-hero-content {
+        padding: 18px
+      }
+
+      .genre-hero-text h1 {
+        font-size: 28px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <section class="home-section">
+    <div class="genre-hero" id="genre-hero">
+      <img class="genre-hero-img" id="hero-img" src="/img/home-banner3.png" alt="">
+      <div class="genre-hero-overlay"></div>
+      <div class="genre-hero-content">
+        <div class="genre-hero-text">
+          <h1 id="hero-title">—</h1>
+          <p id="hero-sub">Cargando...</p>
+        </div>
+        <button class="btn-play-genre" id="hero-play-btn">
+          <i class="fas fa-play" id="hero-play-ico"></i>
+          <span id="hero-play-lbl">Reproducir</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="genre-content">
+      <section class="bloque">
+        <div class="sec-header">
+          <h2>Canciones Populares</h2>
+        </div>
+        <div id="songs-list"></div>
+        <button class="show-more-btn" id="show-more-btn" style="display:none" onclick="mostrarMas()">Mostrar
+          más</button>
+      </section>
+      <section class="bloque" id="sec-albums-wrap">
+        <div class="sec-header">
+          <h2>Álbumes</h2>
+        </div>
+        <div class="carousel" id="albums-list"></div>
+      </section>
+      <section class="bloque" id="sec-playlists-wrap">
+        <div class="sec-header">
+          <h2>Listas del género</h2>
+        </div>
+        <div class="carousel" id="playlists-list"></div>
+      </section>
+    </div>
+  </section>
+
+  <script type="module">
+
+
+    const GENEROS = [
+      { nombre: 'Pop', img: '/img/Pop.jpeg' },
+      { nombre: 'Rock', img: '/img/Rock.jpeg' },
+      { nombre: 'Electrónica', img: '/img/Electronica.jpeg' },
+      { nombre: 'Hip-Hop', img: '/img/Hip-Hop.jpeg' },
+      { nombre: 'Jazz & Blues', img: '/img/Jazz.jpeg' },
+      { nombre: 'Latina', img: '/img/Latina.jpeg' },
+      { nombre: 'Country', img: '/img/Country.jpeg' },
+      { nombre: 'Afrobeats', img: '/img/Afrobeats.jpeg' },
+      { nombre: 'K-Pop', img: '/img/K-Pop.jpeg' },
+      { nombre: 'Salsa', img: '/img/Salsa.jpeg' },
+      { nombre: 'Bachata', img: '/img/Bachata.jpeg' },
+      { nombre: 'Drill', img: '/img/Drill.jpeg' },
+      { nombre: 'PluggnB', img: '/img/PluggnB.jpeg' },
+      { nombre: 'Phonk', img: '/img/Phonk.jpeg' },
+      { nombre: 'Mexicano', img: '/img/Mexicano.jpeg' },
+      { nombre: 'R&B', img: '/img/RnB.jpeg' },
+      { nombre: 'Trap', img: '/img/Trap.jpeg' },
+      { nombre: 'Reggaeton', img: '/img/Reggaeton.jpeg' },
+      { nombre: 'Romántica', img: '/img/Romantica.jpeg' },
+      { nombre: 'Rap', img: '/img/Rap.jpeg' },
+      { nombre: 'Funk', img: '/img/Funk.jpeg' },
+    ];
+    const GENERO_IMG_MAP = Object.fromEntries(GENEROS.map(g => [g.nombre, g.img]));
+
+    import { getDB } from '/js/sneak-db.js';
+    let _db = null;
+    async function getFirestoreDB() { if (!_db) _db = await getDB(); return _db; }
+    import {
+      collection, query, where, orderBy, limit, getDocs
+    } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+    import { toggleLike, getMisLikes } from '/js/sneak-db.js';
+
+    const params = new URLSearchParams(location.search);
+    const genero = decodeURIComponent(params.get('genero') || '');
+    if (!genero) { window.location.href = '/explorar'; }
+
+    const PH = '/img/home-banner.png';
+    const PHU = '/img/porfile.jpeg';
+    function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') }
+    function fmt(n) { if (!n) return '0'; if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M'; if (n >= 1000) return (n / 1000).toFixed(0) + 'k'; return String(n) }
+
+    // Hero
+    const heroImg = GENERO_IMG_MAP[genero] || PH;
+    document.getElementById('hero-title').textContent = genero;
+    document.getElementById('hero-sub').textContent = `Las mejores canciones de ${genero}`;
+    document.getElementById('hero-img').src = heroImg;
+    document.title = `${genero} — Sneak Studio`;
+
+    let _canciones = [], _likedIds = new Set(), _showing = 10, _playing = false;
+
+    async function cargar() {
+      // Canciones del género ordenadas por reproducciones
+      let snap;
+      try {
+        snap = await getDocs(query(
+          collection(await getFirestoreDB(), 'canciones'),
+          where('genero', 'in', [genero, genero.toLowerCase(), genero.toUpperCase(), genero.charAt(0).toUpperCase() + genero.slice(1).toLowerCase()]),
+          orderBy('reproducciones', 'desc'),
+          limit(100)
+        ));
+      } catch (e) {
+        snap = await getDocs(query(
+          collection(await getFirestoreDB(), 'canciones'), where('genero', '==', genero), limit(100)
+        ));
+      }
+
+      const todas = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      _canciones = todas.filter(c => c.tipo !== 'lista' && c.tipo !== 'album' && c.tipo !== 'ep')
+        .sort((a, b) => (b.reproducciones || 0) - (a.reproducciones || 0));
+      const albumes = todas.filter(c => c.tipo === 'album' || c.tipo === 'ep');
+
+      let listas = [];
+      try {
+        const ls = await getDocs(query(
+          collection(await getFirestoreDB(), 'canciones'), where('tipo', '==', 'lista'), where('genero', '==', genero), limit(20)
+        ));
+        listas = ls.docs.map(d => ({ id: d.id, ...d.data() }));
+      } catch (_) { }
+
+      try { _likedIds = new Set(await getMisLikes()); } catch (_) { }
+
+      // Play all
+      document.getElementById('hero-play-btn').onclick = () => togglePlayAll();
+
+      renderSongs();
+      renderAlbumes(albumes);
+      renderListas(listas);
+    }
+
+    function renderSongs() {
+      const el = document.getElementById('songs-list');
+      const visible = _canciones.slice(0, _showing);
+      if (!visible.length) {
+        el.innerHTML = `<p style="padding:24px 0;color:#444;font-size:13px">Sin canciones de ${esc(genero)} todavía.</p>`;
+        return;
+      }
+      el.innerHTML = visible.map((c, i) => `
+      <div class="song-row" id="srow-${esc(c.id)}" onclick="playSong('${esc(c.id)}')">
+        <div class="song-num-wrap">
+          <span class="song-num">${i + 1}</span>
+          <span class="song-play"><i class="fas fa-play"></i></span>
+        </div>
+        <img class="song-thumb" src="${esc(c.portada || PH)}" alt="" onerror="this.src='${PH}'">
+        <div class="song-info">
+          <div class="song-title${_cancionActiva === c.id ? ' playing-title' : ''}">${esc(c.titulo || '—')}</div>
+          <div class="song-artist">
+            <img src="${esc(c.artistaFoto || PHU)}" alt="" onerror="this.style.display='none'">
+            <a href="/perfil?uid=${esc(c.uid || '')}" onclick="event.stopPropagation()" style="color:inherit;text-decoration:none">${esc(c.artista || '—')}</a>
+          </div>
+        </div>
+        <span class="song-repros">${fmt(c.reproducciones || 0)}</span>
+        <button class="song-like${_likedIds.has(c.id) ? ' liked' : ''}"
+          onclick="event.stopPropagation();likeCancion('${esc(c.id)}',this)">
+          <i class="${_likedIds.has(c.id) ? 'fas' : 'far'} fa-heart"></i>
+        </button>
+      </div>`).join('');
+      document.getElementById('show-more-btn').style.display = _canciones.length > _showing ? '' : 'none';
+    }
+
+    let _cancionActiva = null;
+    window.playSong = function (id) {
+      const c = _canciones.find(x => x.id === id);
+      if (!c) return;
+      _cancionActiva = id;
+      renderSongs();
+      if (window.reproducirCancion) window.reproducirCancion(c);
+      updatePlayBtn(true);
+      _playing = true;
+    };
+    window.mostrarMas = function () { _showing += 10; renderSongs(); };
+
+    function togglePlayAll() {
+      if (_playing) {
+        if (window._togglePlayerPause) window._togglePlayerPause();
+        _playing = false;
+        updatePlayBtn(false);
+      } else {
+        const conAudio = _canciones.filter(c => c.audio);
+        if (!conAudio.length) return;
+        if (window.cargarCola) window.cargarCola(conAudio, 0);
+        _playing = true;
+        updatePlayBtn(true);
+      }
+    }
+    function updatePlayBtn(playing) {
+      const btn = document.getElementById('hero-play-btn');
+      const ico = document.getElementById('hero-play-ico');
+      const lbl = document.getElementById('hero-play-lbl');
+      if (btn) btn.classList.toggle('playing', playing);
+      if (ico) ico.className = playing ? 'fas fa-pause' : 'fas fa-play';
+      if (lbl) lbl.textContent = playing ? 'Pausar' : 'Reproducir';
+    }
+    window._onSongPauseChange = (p) => { _playing = !p; updatePlayBtn(!p); };
+
+    window.likeCancion = async function (id, btn) {
+      try {
+        const { toggleLike: tl } = await import('/js/sneak-db.js');
+        const nuevo = await tl(id);
+        if (nuevo) _likedIds.add(id); else _likedIds.delete(id);
+        btn.className = 'song-like' + (nuevo ? ' liked' : '');
+        btn.querySelector('i').className = (nuevo ? 'fas' : 'far') + ' fa-heart';
+      } catch (_) { }
+    };
+
+    function renderAlbumes(albumes) {
+      const wrap = document.getElementById('sec-albums-wrap');
+      const el = document.getElementById('albums-list');
+      if (!albumes.length) { wrap.style.display = 'none'; return; }
+      el.innerHTML = albumes.map(a => `
+      <div class="album-card" onclick="window.location.href = '/cancion?id=${esc(a.id)}'">
+        <div class="album-thumb-wrap">
+          <img src="${esc(a.portada || PH)}" alt="${esc(a.titulo)}" onerror="this.src='${PH}'">
+          <button class="album-play-btn" onclick="event.stopPropagation();playAlbum('${esc(a.id)}')"><i class="fas fa-play"></i></button>
+        </div>
+        <div class="album-title">${esc(a.titulo || '—')}</div>
+        <div class="album-meta">${(a.tipo === 'ep' ? 'EP' : 'Álbum')} · ${esc(a.artista || '')}</div>
+      </div>`).join('');
+      el.addEventListener('wheel', e => { if (e.deltaY !== 0) { e.preventDefault(); el.scrollLeft += e.deltaY; } }, { passive: false });
+    }
+    window.playAlbum = function (id) {
+      const a = _canciones.find(c => c.id === id);
+      if (a?.audio && window.reproducirCancion) window.reproducirCancion(a);
+    };
+
+    function renderListas(listas) {
+      const wrap = document.getElementById('sec-playlists-wrap');
+      const el = document.getElementById('playlists-list');
+      if (!listas.length) { wrap.style.display = 'none'; return; }
+      el.innerHTML = listas.map(p => `
+      <div class="playlist-card" onclick="window.location.href = '/cancion?id=${esc(p.id)}'">
+        <img class="playlist-thumb" src="${esc(p.portada || PH)}" alt="${esc(p.titulo)}" onerror="this.src='${PH}'">
+        <div class="playlist-info">
+          <h3>${esc(p.titulo || 'Lista')}</h3>
+          <p>${esc(p.desc || p.descripcion || 'Lista curada')}</p>
+        </div>
+      </div>`).join('');
+      el.addEventListener('wheel', e => { if (e.deltaY !== 0) { e.preventDefault(); el.scrollLeft += e.deltaY; } }, { passive: false });
+    }
+
+    cargar();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="/js/emailjs-config.js"></script>
+  <script src="/js/denuncia.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/player-global.js"></script>
+  <script type="module" src="/js/auth-guard.js"></script>
+  <script src="/js/scroll-buttons.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,326 @@
+ 
+:root {
+    --accent: #FF6200;
+    --glass-white: rgba(255, 255, 255, 0.05);
+}
+
+.profile-wrapper {
+    background: #08080a;
+    min-height: 100vh;
+}
+
+ 
+.artist-header {
+    position: relative;
+    height: 52vh;
+    min-height: 420px;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 5% 44px;
+    background-size: cover;
+    background-position: center 20%;
+    border-radius: 24px;
+    transition: background-image .5s ease;
+}
+
+.artist-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, #08080a 0%, rgba(8, 8, 10, .55) 50%, transparent 100%);
+}
+
+.artist-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+.verified-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #ffcab9;
+    margin-bottom: 10px;
+}
+
+.artist-name-display {
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: 900;
+    margin: 0;
+    letter-spacing: -2px;
+    line-height: 1;
+}
+
+ 
+.artist-stats-bar {
+    display: flex;
+    gap: 24px;
+    margin: 20px 0;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.stat-label {
+    font-size: 11px;
+    color: #d0d0d0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-divider {
+    width: 1px;
+    height: 26px;
+    background: rgba(255, 255, 255, .1);
+}
+
+ 
+.profile-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btn-play-all {
+    background: #FF6200;
+    color: #000;
+    border: none;
+    padding: 13px 36px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform .15s, background .2s;
+}
+
+.btn-play-all:hover {
+    background: #ff7a20;
+    transform: scale(1.02);
+}
+
+.btn-follow-profile {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, .3);
+    color: #fff;
+    padding: 11px 28px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background .2s, border-color .2s;
+}
+
+.btn-follow-profile:hover {
+    background: rgba(255, 255, 255, .07);
+}
+
+.btn-follow-profile.siguiendo {
+    background: rgba(255, 255, 255, .1);
+    border-color: rgba(255, 255, 255, .4);
+}
+
+.btn-edit-perfil {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255, 255, 255, .08);
+    border: 1px solid rgba(255, 255, 255, .15);
+    color: #fff;
+    padding: 11px 22px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .2s;
+}
+
+.btn-edit-perfil:hover {
+    background: rgba(255, 255, 255, .14);
+}
+
+ 
+.perfil-info-row {
+    display: flex;
+    gap: 40px;
+    padding: 32px 5% 0;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.perfil-bio-box {
+    flex: 1;
+    min-width: 220px;
+}
+
+.perfil-bio-txt {
+    font-size: 14px;
+    color: rgba(255, 255, 255, .65);
+    line-height: 1.8;
+    margin-bottom: 12px;
+}
+
+.perfil-ubic {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 14px;
+}
+
+.perfil-ubic i {
+    margin-right: 6px;
+}
+
+.perfil-gens {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.perf-gen-pill {
+    background: rgba(255, 255, 255, .06);
+    border: 1px solid rgba(255, 255, 255, .11);
+    border-radius: 20px;
+    padding: 5px 13px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, .55);
+}
+
+.perfil-redes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 180px;
+}
+
+.perf-red-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, .05);
+    border: 1px solid rgba(255, 255, 255, .09);
+    border-radius: 10px;
+    padding: 10px 16px;
+    color: rgba(255, 255, 255, .65);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background .2s, color .2s;
+}
+
+.perf-red-btn:hover {
+    background: rgba(255, 255, 255, .1);
+    color: #fff;
+}
+
+.perf-red-btn i {
+    width: 16px;
+    text-align: center;
+}
+
+ 
+.artist-body {
+    padding: 28px 5% 140px;
+}
+
+.popular-section h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.compact-song-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.song-card {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: var(--glass-white);
+    transition: background .2s;
+}
+
+.song-card:hover {
+    background: rgba(255, 255, 255, .09);
+}
+
+.rank {
+    width: 28px;
+    color: #555;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.mini-cover {
+    width: 42px;
+    height: 42px;
+    border-radius: 6px;
+    margin: 0 16px;
+    object-fit: cover;
+}
+
+.song-info-minimal {
+    flex-grow: 1;
+}
+
+.s-title {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.s-plays {
+    font-size: 12px;
+    color: #555;
+}
+
+.s-time {
+    margin: 0 24px;
+    color: #555;
+    font-size: 13px;
+}
+
+ 
+@media (max-width: 1024px) {
+    .artist-name-display {
+        font-size: clamp(2rem, 8vw, 4rem);
+    }
+}
+
+@media (max-width: 768px) {
+    .artist-header {
+        border-radius: 24px;
+        min-height: 320px;
+        padding: 0 20px 32px;
+    }
+
+    .perfil-info-row {
+        flex-direction: column;
+        padding: 20px 16px 0;
+        gap: 24px;
+    }
+
+    .artist-body {
+        padding: 20px 16px 160px;
+    }
+
+    .perfil-redes {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}

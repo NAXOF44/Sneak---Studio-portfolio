@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/reglas.css">
+  <link rel="stylesheet" href="/css/Bar-player.css">
+  <link rel="stylesheet" href="/css/footer.css">
+  <link rel="icon" type="image/x-icon" href="/favicon_io/favsk (6).svg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Canción — Sneak Studio</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080808;--bg2:#111;--border:rgba(255,255,255,.08);--muted:#555;--muted2:#888;--accent:#FF6200;--white:#fff}
+    body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+    .home-section{margin-left:240px;padding-bottom:200px;min-height:100vh}
+
+    /* HERO */
+    .song-hero{position:relative;min-height:55vh;display:flex;align-items:flex-end;padding:0 5% 44px;overflow:hidden}
+    .hero-bg{position:absolute;inset:0;background-size:cover;background-position:center 25%;filter:blur(22px) brightness(.45) saturate(1.3);transform:scale(1.08);transition:background-image .6s}
+    .hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,rgba(8,8,8,.6) 50%,transparent 100%)}
+    .hero-content{position:relative;z-index:2;display:flex;align-items:flex-end;gap:36px;width:100%}
+    .hero-cover{width:200px;height:200px;min-width:200px;border-radius:16px;object-fit:cover;box-shadow:0 24px 60px rgba(0,0,0,.8)}
+    .hero-info{flex:1;min-width:0}
+    .hero-tipo{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted2);margin-bottom:8px}
+    .hero-titulo{font-size:clamp(1.4rem,4vw,2.8rem);font-weight:900;line-height:1.15;letter-spacing:-0.5px;margin-bottom:14px;word-break:break-word;overflow-wrap:break-word}
+    .hero-artista{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+    .hero-artista img{width:28px;height:28px;border-radius:50%;object-fit:cover;border:1px solid var(--border)}
+    .hero-artista a{font-size:14px;font-weight:600;color:var(--white);text-decoration:none;transition:opacity .2s}
+    .hero-artista a:hover{opacity:.75}
+    .hero-artista span{color:var(--muted2);font-size:13px}
+    .hero-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+
+    .btn-play-hero{background:var(--accent);color:#000;border:none;padding:13px 36px;border-radius:50px;font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:transform .15s,background .2s}
+    .btn-play-hero:hover{background:#ff7a20;transform:scale(1.02)}
+    .btn-play-hero.playing{background:rgba(255,255,255,.15);color:var(--white)}
+
+    .btn-like-hero{background:transparent;border:1px solid var(--border);color:var(--white);width:48px;height:48px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s}
+    .btn-like-hero:hover{background:rgba(255,255,255,.07)}
+    .btn-like-hero.liked{border-color:#ff4444;color:#ff4444}
+
+    .btn-seguir-hero{background:transparent;border:1px solid rgba(255,255,255,.3);color:var(--white);padding:11px 28px;border-radius:50px;font-weight:600;font-size:14px;cursor:pointer;transition:background .2s,border-color .2s}
+    .btn-seguir-hero:hover{background:rgba(255,255,255,.07)}
+    .btn-seguir-hero.siguiendo{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.4)}
+
+    /* BODY */
+    .song-body{display:grid;grid-template-columns:1fr 300px;gap:40px;padding:40px 5%}
+
+    /* WAVEFORM */
+    .waveform-wrap{background:var(--bg2);border-radius:16px;padding:24px;margin-bottom:24px;display:none}
+    .waveform-bars{display:flex;align-items:center;gap:2px;height:60px}
+    .wbar{flex:1;border-radius:2px;min-width:3px;max-width:6px;background:rgba(255,255,255,.15);transition:background .1s}
+    .wbar.played{background:var(--accent)}
+    .wbar.current{background:#fff}
+    .wf-times{display:flex;justify-content:space-between;font-size:11px;color:var(--muted2);margin-top:10px}
+
+    /* DESC */
+    .song-desc-wrap{background:var(--bg2);border-radius:16px;padding:24px;margin-bottom:24px;display:none}
+    .song-desc-wrap h3{font-size:13px;color:var(--muted2);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
+    .song-desc{font-size:14px;color:rgba(255,255,255,.75);line-height:1.6}
+
+    /* TAGS */
+    .tags-wrap{display:none;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+    .tag-pill{background:rgba(255,255,255,.07);border:1px solid var(--border);padding:6px 14px;border-radius:50px;font-size:12px;color:var(--muted2)}
+
+    /* TRACKLIST */
+    .tracklist-wrap{display:none}
+    .tracklist-wrap h3{font-size:13px;color:var(--muted2);margin-bottom:14px;text-transform:uppercase;letter-spacing:1px}
+    .track-item{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;cursor:pointer;transition:background .15s;border-bottom:1px solid var(--border)}
+    .track-item:hover{background:rgba(255,255,255,.05)}
+    .track-item.activo{background:rgba(255,98,0,.08)}
+    .track-num{font-size:13px;color:var(--muted2);width:20px;text-align:center;flex-shrink:0}
+    .track-play-ico{width:20px;text-align:center;flex-shrink:0;display:none;font-size:13px;color:var(--accent)}
+    .track-name{flex:1;font-size:14px;font-weight:500}
+    .track-dur{font-size:12px;color:var(--muted2)}
+
+    /* INFO CARD */
+    .info-card{background:var(--bg2);border-radius:16px;padding:24px;height:fit-content;border:1px solid var(--border)}
+    .info-card h3{font-size:13px;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+    .info-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+    .info-row:last-child{border-bottom:none}
+    .info-label{color:var(--muted2)}
+    .info-value{font-weight:600;color:var(--white)}
+
+    /* ARTISTA CARD */
+    .artista-card{background:var(--bg2);border-radius:16px;padding:20px;margin-top:20px;border:1px solid var(--border)}
+    .artista-card-inner{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+    .artista-card-img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:1px solid var(--border)}
+    .artista-card-name{font-size:16px;font-weight:700}
+    .artista-card-sub{font-size:12px;color:var(--muted2);margin-top:2px}
+    .btn-ir-perfil{width:100%;background:rgba(255,255,255,.07);border:1px solid var(--border);color:var(--white);padding:10px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s}
+    .btn-ir-perfil:hover{background:rgba(255,255,255,.12)}
+
+    /* STATS */
+    .stats-row{display:flex;gap:16px;margin-bottom:24px}
+    .stat-box{flex:1;background:var(--bg2);border-radius:12px;padding:16px;text-align:center;border:1px solid var(--border)}
+    .stat-box-val{font-size:1.4rem;font-weight:800;color:var(--white)}
+    .stat-box-lbl{font-size:11px;color:var(--muted2);margin-top:4px;text-transform:uppercase;letter-spacing:1px}
+
+    /* ERROR */
+    .error-page{display:flex;flex-direction:column;align-items:center;justify-content:center;height:80vh;gap:16px}
+    .error-page p{font-size:16px;color:var(--muted)}
+    .error-page a{color:var(--accent);text-decoration:none;font-size:14px}
+
+    @media(max-width:900px){.home-section{margin-left:0}.hero-cover{width:140px;height:140px;min-width:140px}.song-body{grid-template-columns:1fr}}
+    @media(max-width:600px){.hero-content{flex-direction:column;align-items:flex-start;gap:20px}.hero-cover{width:120px;height:120px;min-width:120px}}
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <section class="home-section" id="cancion-section">
+
+    <div class="song-hero" id="song-hero">
+      <div class="hero-bg" id="hero-bg"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <img class="hero-cover" id="hero-cover" src="" alt="">
+        <div class="hero-info">
+          <p class="hero-tipo" id="hero-type">Sencillo</p>
+          <h1 class="hero-titulo" id="hero-titulo">—</h1>
+          <div class="hero-artista">
+            <img src="/img/porfile.jpeg" id="hero-art-img" alt="">
+            <a href="#" id="hero-art-link"><span id="hero-art-nombre">Artista</span></a>
+            <span id="hero-fecha"></span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn-play-hero" id="btn-play-hero" onclick="togglePlayHero()">
+              <i class="fas fa-play" id="play-ico"></i> Escuchar
+            </button>
+            <button class="btn-like-hero" id="btn-like" onclick="toggleLikeHero()">
+              <i class="far fa-heart" id="like-ico"></i>
+            </button>
+            <button class="btn-seguir-hero" id="btn-seguir-art" onclick="toggleSeguirHero()" style="display:none">
+              Seguir
+            </button>
+            <button class="btn-like-hero" style="border-color:rgba(255,80,80,.35);color:rgba(255,100,100,.8)" title="Denunciar canción"
+              onclick="(function(){var params=new URLSearchParams({tipo:'Canción',nombre:document.getElementById('hero-titulo')?.textContent||'',id:new URLSearchParams(location.search).get('id')||''});location.href='/html/Denuncia.html?'+params.toString();})()">
+              <i class="fas fa-flag"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="song-body">
+      <div>
+        <div class="stats-row">
+          <div class="stat-box"><div class="stat-box-val" id="stat-repros">0</div><div class="stat-box-lbl">Reproducciones</div></div>
+          <div class="stat-box"><div class="stat-box-val" id="stat-likes">0</div><div class="stat-box-lbl">Likes</div></div>
+        </div>
+        <div class="waveform-wrap" id="waveform-wrap">
+          <div class="waveform-bars" id="wbars"></div>
+          <div class="wf-times"><span id="wf-cur">0:00</span><span id="wf-dur">0:00</span></div>
+        </div>
+        <div class="song-desc-wrap" id="sec-desc">
+          <h3>Descripción</h3><p class="song-desc" id="song-desc"></p>
+        </div>
+        <div class="tags-wrap" id="sec-tags"></div>
+        <div class="tracklist-wrap" id="sec-tracks">
+          <h3>Canciones</h3><div id="tracks-list"></div>
+        </div>
+      </div>
+      <div>
+        <div class="info-card">
+          <h3>Información</h3>
+          <div class="info-row"><span class="info-label">Tipo</span><span class="info-value" id="info-tipo">—</span></div>
+          <div class="info-row"><span class="info-label">Género</span><span class="info-value" id="info-genero">—</span></div>
+          <div class="info-row"><span class="info-label">Fecha</span><span class="info-value" id="info-fecha">—</span></div>
+        </div>
+        <div class="artista-card">
+          <div class="artista-card-inner">
+            <img class="artista-card-img" id="art-img" src="/img/porfile.jpeg" alt="">
+            <div><div class="artista-card-name" id="art-name">—</div><div class="artista-card-sub">Artista</div></div>
+          </div>
+          <button class="btn-ir-perfil" id="btn-ir-perfil">Ver perfil →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script type="module">
+import { getUsuarioLocal } from '/js/firebase-auth.js';
+import {
+  leerCancion, registrarReproduccion,
+  toggleLike, isLiked,
+  toggleSeguir, isSiguiendo, getUID
+} from '/js/sneak-db.js';
+
+const params = new URLSearchParams(location.search);
+const id     = params.get('id');
+const $      = i => document.getElementById(i);
+const fmt    = n => !n?'0':n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(0)+'k':String(n);
+const fmt2   = s => isNaN(s)?'0:00':`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+
+let _c       = null;
+let _playing = false;
+
+const BARS = 60;
+let barAlts = [];
+
+function generarWaveform() {
+  const el = $('wbars'); if (!el) return;
+  barAlts = Array.from({length:BARS}, () => Math.random()*80+20);
+  el.innerHTML = barAlts.map((h,i) => `<div class="wbar" id="wb-${i}" style="height:${h}%"></div>`).join('');
+}
+
+function actualizarWaveform(pct) {
+  const p = Math.floor((pct/100)*BARS);
+  barAlts.forEach((_,i) => {
+    const e = $(`wb-${i}`);
+    if (e) e.className = i < p-1 ? 'wbar played' : i === p ? 'wbar current' : 'wbar';
+  });
+}
+
+function renderCancion(c) {
+  _c = c;
+  const portada = c.portada || '/img/home-banner.png';
+  document.title = `${c.titulo} — Sneak Studio`;
+
+  const heroBg = $('hero-bg');
+  if (heroBg) heroBg.style.backgroundImage = `url(${portada})`;
+
+  const cover = $('hero-cover');
+  if (cover) { cover.src = portada; cover.onerror = () => { cover.src = '/img/home-banner.png'; }; }
+
+  const tit = $('hero-titulo');     if (tit)  tit.textContent  = c.titulo || '—';
+  const tipo = $('hero-type');      if (tipo) tipo.textContent = c.tipo ? c.tipo[0].toUpperCase()+c.tipo.slice(1) : 'Sencillo';
+  const fecha = $('hero-fecha');    if (fecha) fecha.textContent = c.fecha ? '· '+c.fecha : '';
+
+  const artNom = $('hero-art-nombre'); if (artNom) artNom.textContent = c.artista || 'Artista';
+  const artImg = $('hero-art-img');
+  if (artImg) { artImg.src = c.artistaFoto || '/img/porfile.jpeg'; artImg.onerror = () => { artImg.src = '/img/porfile.jpeg'; }; }
+
+  const user = getUsuarioLocal();
+  const artLink = $('hero-art-link');
+  if (artLink) artLink.href = (user && c.uid === user.uid)
+    ? '/html/Perfil.html'
+    : `/perfil?uid=${c.uid||''}&artista=${encodeURIComponent(c.artista||'')}`;
+
+  const sr = $('stat-repros'); if (sr) sr.textContent = fmt(c.reproducciones||0);
+  const sl = $('stat-likes');  if (sl) sl.textContent = fmt(c.likes||0);
+  const it = $('info-tipo');   if (it) it.textContent = c.tipo ? c.tipo[0].toUpperCase()+c.tipo.slice(1) : '—';
+  const ig = $('info-genero'); if (ig) ig.textContent = c.genero || '—';
+  const ifd = $('info-fecha'); if (ifd) ifd.textContent = c.fecha || '—';
+
+  if (c.desc) {
+    const sd = $('sec-desc');  if (sd)  sd.style.display  = 'block';
+    const sd2 = $('song-desc'); if (sd2) sd2.textContent  = c.desc;
+  }
+
+  if (c.tags?.length) {
+    const st = $('sec-tags');
+    if (st) { st.style.display = 'flex'; st.innerHTML = c.tags.map(t => `<span class="tag-pill">#${String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</span>`).join(''); }
+  }
+
+  if (c.tracks?.length) {
+    const sTr = $('sec-tracks'); if (sTr) sTr.style.display = 'block';
+    const list = $('tracks-list');
+    if (list) list.innerHTML = c.tracks.map((t,i) => `
+      <div class="track-item" id="trow-${i}" onclick="playTrack(${i})">
+        <span class="track-num"  id="tnum-${i}">${i+1}</span>
+        <span class="track-play-ico" id="tplay-${i}" style="display:none"><i class="fas fa-play" id="tplay-ico-${i}"></i></span>
+        <span class="track-name">${String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</span>
+        <span class="track-dur" id="tdur-${i}">—</span>
+      </div>`).join('');
+  }
+
+  const an = $('art-name'); if (an) an.textContent = c.artista || '—';
+  const ai = $('art-img');
+  if (ai) { ai.src = c.artistaFoto || '/img/porfile.jpeg'; ai.onerror = () => { ai.src = '/img/porfile.jpeg'; }; }
+
+  const bp = $('btn-ir-perfil');
+  if (bp) bp.onclick = () => {
+    window.location.href = (user && c.uid === user.uid)
+      ? '/html/Perfil.html'
+      : `/perfil?uid=${c.uid||''}&artista=${encodeURIComponent(c.artista||'')}`;
+  };
+
+  
+
+  if (c.audio) {
+    const ww = $('waveform-wrap'); if (ww) ww.style.display = 'block';
+    generarWaveform();
+    
+
+    const audio = window.__sneakAudio;
+    if (audio) {
+      audio.addEventListener('timeupdate', () => {
+        if (!audio.duration) return;
+        actualizarWaveform((audio.currentTime / audio.duration) * 100);
+        const wc = $('wf-cur'); if (wc) wc.textContent = fmt2(audio.currentTime);
+        const wd = $('wf-dur'); if (wd) wd.textContent = fmt2(audio.duration);
+      });
+    }
+  }
+
+  if (params.get('autoplay') === '1') setTimeout(togglePlayHero, 600);
+}
+
+window.togglePlayHero = function () {
+  if (!_c) return;
+
+  const btn = $('btn-play-hero');
+  const ico = $('play-ico');
+
+  if (_playing) {
+    
+
+    if (typeof window._togglePlayerPause === 'function') window._togglePlayerPause();
+    _playing = false;
+    if (btn) btn.classList.remove('playing');
+    if (ico) ico.className = 'fas fa-play';
+  } else {
+    
+
+    if (typeof window.reproducirCancion === 'function') window.reproducirCancion(_c);
+    _playing = true;
+    if (btn) btn.classList.add('playing');
+    if (ico) ico.className = 'fas fa-pause';
+  }
+};
+
+window._onSongPauseChange = function (isPaused) {
+  _playing = !isPaused;
+  const btn = $('btn-play-hero');
+  const ico = $('play-ico');
+  if (btn) btn.classList.toggle('playing', !isPaused);
+  if (ico) ico.className = isPaused ? 'fas fa-play' : 'fas fa-pause';
+};
+
+window._onSongChange = function (newId) {
+  if (!_c) return;
+  const esNuestra = newId && String(newId) === String(_c.id);
+  if (!esNuestra) {
+    _playing = false;
+    const btn = $('btn-play-hero');
+    const ico = $('play-ico');
+    if (btn) btn.classList.remove('playing');
+    if (ico) ico.className = 'fas fa-play';
+  }
+};
+
+window.playTrack = function (idx) {
+  if (!_c?.tracksAudio?.[idx]) return;
+  const tc = {
+    id:          `${_c.id}_t${idx}`,
+    titulo:      _c.tracks?.[idx] || `Pista ${idx+1}`,
+    audio:       _c.tracksAudio[idx],
+    portada:     _c.portada || '',
+    artista:     _c.artista || '',
+    artistaFoto: _c.artistaFoto || '',
+  };
+  document.querySelectorAll('.track-item').forEach(e => e.classList.remove('activo'));
+  document.querySelectorAll('[id^="tplay-"]').forEach(e => e.style.display = 'none');
+  document.querySelectorAll('[id^="tnum-"]').forEach(e => e.style.display = '');
+  const row = $(`trow-${idx}`);       if (row) row.classList.add('activo');
+  const pl  = $(`tplay-${idx}`);      if (pl)  pl.style.display = 'inline';
+  const num = $(`tnum-${idx}`);       if (num) num.style.display = 'none';
+  const ico = $(`tplay-ico-${idx}`);  if (ico) ico.className = 'fas fa-pause';
+  if (typeof window.reproducirCancion === 'function') window.reproducirCancion(tc);
+};
+
+window.toggleLikeHero = async function () {
+  if (!_c) return;
+
+  const uid = getUID();
+  if (!uid) {
+    
+
+    window.location.href = '/login';
+    return;
+  }
+
+  const ico = $('like-ico');
+  const btn = $('btn-like');
+
+  try {
+    const nuevoEstado = await toggleLike(_c.id);
+    if (nuevoEstado !== null && nuevoEstado !== undefined) {
+      if (ico) ico.className  = nuevoEstado ? 'fas fa-heart' : 'far fa-heart';
+      if (btn) btn.classList.toggle('liked', nuevoEstado);
+      
+
+      const sl = $('stat-likes');
+      if (sl) {
+        const actual = parseInt(sl.textContent.replace(/[kM]/g, '')) || 0;
+        sl.textContent = fmt((_c.likes || 0) + (nuevoEstado ? 1 : -1));
+      }
+    }
+  } catch (e) {
+    console.error('[Cancion] toggleLike error:', e);
+  }
+};
+
+window.toggleSeguirHero = async function () {
+  if (!_c?.uid) return;
+  try {
+    const nuevo = await toggleSeguir(_c.uid);
+    if (nuevo !== null) {
+      const btn = $('btn-seguir-art');
+      if (btn) { btn.textContent = nuevo ? 'Siguiendo' : 'Seguir'; btn.classList.toggle('siguiendo', nuevo); }
+    }
+  } catch (e) {
+    console.error('[Cancion] toggleSeguir error:', e);
+  }
+};
+
+async function init() {
+  if (!id) { mostrarError('No se especificó ninguna canción.'); return; }
+
+  let cancion;
+  try {
+    cancion = await leerCancion(id);
+  } catch (e) {
+    console.error('[Cancion] leerCancion error:', e);
+    mostrarError('Error de conexión con Firestore.');
+    return;
+  }
+
+  if (!cancion) { mostrarError('Canción no encontrada.'); return; }
+  window.__sneakReady && window.__sneakReady();
+  renderCancion(cancion);
+  registrarReproduccion(id).catch(() => {});
+
+  
+
+  const uid = getUID();
+  if (uid) {
+    const liked = await isLiked(id).catch(() => false);
+    const ico = $('like-ico');
+    const btn = $('btn-like');
+    if (liked) {
+      if (ico) ico.className = 'fas fa-heart';
+      if (btn) btn.classList.add('liked');
+    }
+
+    
+
+    const btnSeg = $('btn-seguir-art');
+    if (btnSeg && cancion.uid) {
+      const user = getUsuarioLocal();
+      if (user?.uid === cancion.uid) {
+        btnSeg.style.display = 'none'; 
+
+      } else {
+        btnSeg.style.display = 'block';
+        const sig = await isSiguiendo(cancion.uid).catch(() => false);
+        if (sig) { btnSeg.textContent = 'Siguiendo'; btnSeg.classList.add('siguiendo'); }
+      }
+    }
+  }
+}
+
+function mostrarError(msg) {
+  const s = $('cancion-section');
+  if (s) s.innerHTML = `<div class="error-page"><p>${msg}</p><a href="/inicio">← Volver al inicio</a></div>`;
+}
+
+init();
+</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="/js/emailjs-config.js"></script>
+  <script src="/js/denuncia.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/player-global.js"></script>
+  <script type="module" src="/js/auth-guard.js"></script>
+  <script src="/js/scroll-buttons.js"></script>
+</body>
+</html>
